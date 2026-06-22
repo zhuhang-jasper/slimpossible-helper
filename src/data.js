@@ -1,0 +1,226 @@
+// ─────────────────────────────────────────────────────────────
+// EDIT THIS FILE to change the timetable. Everything below feeds
+// the page. Running totals are computed automatically from WEEK_MAX.
+// ─────────────────────────────────────────────────────────────
+
+// Points you can earn EVERY week (W1–W14)
+export const WEEKLY_TASKS = [
+    {
+        icon: "⚖️",
+        title: "Weigh-in",
+        cap: "cap 40/wk",
+        desc: "Every Monday. Photo/video of scale (feet + display visible). Only losses score.",
+        rows: [
+            ["Lose > 0.5 kg", 10],
+            ["Lose > 1 kg", 40],
+        ],
+    },
+    {
+        icon: "👣",
+        title: "Step count",
+        cap: "cap 100/wk",
+        desc: "Log once weekly. Screenshot of any step app (Google Fit, Fitbit…).",
+        rows: [
+            ["20k steps", 20],
+            ["25k steps", 25],
+            ["30k steps", 30],
+            ["35k steps", 35],
+            ["> 40k steps", 100],
+        ],
+    },
+    {
+        icon: "🏃",
+        title: "Workouts",
+        cap: "cap 100/wk",
+        desc: "On separate days. Photo/video showing your face.",
+        rows: [
+            ["1 workout", 30],
+            ["2 workouts", 60],
+            ["3+ workouts", 100],
+        ],
+    },
+];
+
+// Bonus actionables — BOOSTERS ONLY
+export const BONUS_TASKS = [
+    {
+        icon: "📣",
+        title: "Post on ZUS Moments",
+        badge: "30 → 40",
+        desc: "On a booster, also posting to ZUS Moments with the hashtags lifts that booster from 30 → 40 pts. Tag #ChampionsFuelChampions + the week's booster hashtag.",
+    },
+    {
+        icon: "🥤",
+        title: "Show your ZUS merch",
+        badge: "in clip",
+        desc: "In Pace / Hydration booster clips, feature your ZUS tumbler, cup, canned drink, or merch to strengthen the submission.",
+    },
+    {
+        icon: "👥",
+        title: "Tag colleagues",
+        badge: "Buddy Steps",
+        desc: "On the Buddy Steps booster, tag colleagues in your ZUS Moments post to count toward the bonus.",
+    },
+];
+
+// Challenge start (W1 Monday). Weeks are exactly 7 days; the current-week
+// highlight is computed from this date, so the display strings below stay free-text.
+export const CHALLENGE_START = new Date(2026, 5, 22); // 22 Jun 2026 (month is 0-based)
+
+// Realistic max points per week, used as the leaderboard benchmark.
+// Weigh-in is excluded — hitting the >1 kg (40 pt) tier every single week
+// isn't achievable, so it's left out of the ceiling.
+//   100 steps + 100 workouts + 40 booster (Lark + ZUS Moments) = 240/week
+export const WEEK_MAX = 240;
+export const BIWEEKLY_MAX = WEEK_MAX * 2; // 480 over each 2-week booster phase
+
+// Bi-weekly booster rotation. phase = colour-band grouping.
+export const BOOSTERS = [
+    {
+        wk: "W1",
+        dates: "22–28 Jun",
+        phase: "buddy",
+        icon: "👣",
+        name: "Buddy Steps",
+        desc: "Walk/jog with a buddy (incl. family/pets). Photo or video during the activity.",
+        bonus: "Tag colleagues in your ZUS Moments post → +10 pts",
+        tags: "#ZUSBuddySteps #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W2",
+        dates: "29 Jun–5 Jul",
+        phase: "buddy",
+        icon: "👣",
+        name: "Buddy Steps",
+        desc: "Same as W1. Max 2 buddy-step submissions across W1+W2.",
+        tags: "#ZUSBuddySteps #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W3",
+        dates: "6–12 Jul",
+        phase: "snapfuel",
+        icon: "🥗",
+        name: "ZUS SnapFuel",
+        desc: "Cook a healthy homemade meal/smoothie. Upload a short time-lapse video.",
+        bonus: "Post with a catchy title on ZUS Moments → +10 pts",
+        tags: "#ZUSSnapFuel #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W4",
+        dates: "13–19 Jul",
+        phase: "snapfuel",
+        icon: "🥗",
+        name: "ZUS SnapFuel",
+        desc: "Same as W3. Only meals cooked during the challenge weeks count.",
+        tags: "#ZUSSnapFuel #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W5",
+        dates: "20–26 Jul",
+        phase: "pace1",
+        icon: "🏃",
+        name: "ZUS Pace Challenge",
+        desc: "Complete 2km within 20 min. Show distance + time.",
+        bonus: "Post on ZUS Moments (show ZUS merch) → +10 pts",
+        tags: "#ZUSPaceChallenge #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W6",
+        dates: "27 Jul–2 Aug",
+        phase: "pace1",
+        icon: "🏃",
+        name: "ZUS Pace Challenge",
+        desc: "Same goal: 2km in 20 min.",
+        tags: "#ZUSPaceChallenge #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W7",
+        dates: "3–9 Aug",
+        phase: "hydration",
+        icon: "💧",
+        name: "Hydration Hustle",
+        desc: "Drink ≥2L water daily. Film a 15–30s clip: take a sip + share 1 health fact.",
+        bonus: "Post on ZUS Moments (feature ZUS tumbler/merch) → +10 pts",
+        tags: "#ZUSHydrationHustle #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W8",
+        dates: "10–16 Aug",
+        phase: "hydration",
+        icon: "💧",
+        name: "Hydration Hustle",
+        desc: "Same as W7.",
+        tags: "#ZUSHydrationHustle #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W9",
+        dates: "17–23 Aug",
+        phase: "pace2",
+        icon: "⚡",
+        name: "Pace Challenge: Level Up",
+        desc: "Complete 2km within 15 min. Show distance + time.",
+        bonus: "Post on ZUS Moments (show ZUS merch) → +10 pts",
+        tags: "#ZUSPaceUp #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W10",
+        dates: "24–30 Aug",
+        phase: "pace2",
+        icon: "⚡",
+        name: "Pace Challenge: Level Up",
+        desc: "Same goal: 2km in 15 min.",
+        tags: "#ZUSPaceUp #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W11",
+        dates: "31 Aug–6 Sep",
+        phase: "zen",
+        icon: "🧘",
+        name: "ZUS Zen Time",
+        desc: "Join a yoga/Zumba/meditation/wellness class (online or in person). 15–30s time-lapse.",
+        bonus: "Post on ZUS Moments → +10 pts",
+        tags: "#ZUSZenTime #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W12",
+        dates: "7–13 Sep",
+        phase: "zen",
+        icon: "🧘",
+        name: "ZUS Zen Time",
+        desc: "Same as W11. No duplicate submissions of the same session.",
+        tags: "#ZUSZenTime #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W13",
+        dates: "14–20 Sep",
+        phase: "mind",
+        icon: "🧠",
+        name: "ZUS Mind Break Mission",
+        desc: "Attend a ZUS Mental Health Talk / Wellness session. Log a reflection or photo.",
+        bonus: "Post on ZUS Moments with a fun caption → +10 pts",
+        tags: "#ZUSMindBreakMission #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+    {
+        wk: "W14",
+        dates: "21–27 Sep",
+        phase: "mind",
+        icon: "🧠",
+        name: "ZUS Mind Break Mission",
+        desc: "Same as W13. Submission required after attending.",
+        tags: "#ZUSMindBreakMission #ChampionsFuelChampions",
+        pts: "30 / 40",
+    },
+];

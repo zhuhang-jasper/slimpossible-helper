@@ -1,0 +1,132 @@
+:root{
+  --zus-blue:#1d2b8a;
+  --zus-blue-light:#e9ecf9;
+  --zus-gold:#c79a3e;
+  --ink:#1a1a2e;
+  --muted:#5a5f7a;
+  --line:#d7dbef;
+  --bg:#f4f5fb;
+  --green:#1f8a4c;
+  --red:#c0392b;
+  --boost:#fff4e0;
+  --boost-line:#e8c98a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.45;
+  padding:24px 16px 56px;
+}
+.wrap{max-width:840px;margin:0 auto;}
+
+/* ---------- Header ---------- */
+header.hero{
+  background:linear-gradient(135deg,var(--zus-blue),#2c3db0);
+  color:#fff;
+  border-radius:16px;
+  padding:22px 24px;
+  margin-bottom:14px;
+  box-shadow:0 6px 20px rgba(29,43,138,.18);
+}
+header.hero h1{margin:0;font-size:1.5rem;letter-spacing:-.01em;}
+header.hero .sub{margin-top:6px;font-size:.86rem;opacity:.9;}
+header.hero .gold{color:#f0cf85;font-weight:700;}
+
+/* ---------- Weekly recurring summary ---------- */
+.recurring{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px;margin-bottom:14px;
+}
+.recurring h2{margin:0 0 10px;font-size:.95rem;color:var(--zus-blue);}
+.maxbadge{font-size:.7rem;font-weight:700;color:var(--green);background:#e7f5ed;border:1px solid #bfe3cd;border-radius:20px;padding:2px 9px;vertical-align:middle;white-space:nowrap;}
+.pill-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pill{
+  border:1px solid var(--line);border-radius:10px;
+  padding:7px 9px;background:#fafbff;
+  min-width:0;
+}
+.pill .t{font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:5px;justify-content:space-between;}
+.pill .t .cap{font-size:.68rem;color:var(--green);font-weight:700;background:#e7f5ed;border:1px solid #bfe3cd;border-radius:20px;padding:1px 8px;white-space:nowrap;}
+.pill .t .cap.bonus-cap{color:#8a6420;background:var(--boost);border-color:var(--boost-line);}
+.bonus{background:linear-gradient(180deg,#fffaf0,#fff);border-color:var(--boost-line);}
+.bonus h2{color:#8a6420;}
+.pill .d{font-size:.72rem;color:var(--muted);margin-top:3px;}
+/* tidy mini score table inside each pill */
+.ptab{width:100%;border-collapse:collapse;margin-top:6px;font-size:.71rem;}
+.ptab td{padding:1px 4px;}
+.ptab td:first-child{color:var(--muted);}
+.ptab td:last-child{text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;}
+.scope{font-size:.68rem;font-weight:700;color:#b3541e;}
+
+/* ---------- Table ---------- */
+.tablecard{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;
+}
+.scroll{overflow-x:auto;}
+.tablecard table{border-collapse:collapse;width:100%;font-size:.8rem;min-width:560px;}
+.tablecard thead th{
+  background:var(--zus-blue);color:#fff;
+  padding:9px 10px;text-align:left;font-weight:600;
+  font-size:.74rem;letter-spacing:.02em;text-transform:uppercase;
+  position:sticky;top:0;
+}
+.tablecard tbody td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;}
+.tablecard tbody tr:nth-child(even){background:#fafbff;}
+td.wk{font-weight:800;color:var(--zus-blue);white-space:nowrap;}
+td.dates{white-space:nowrap;color:var(--muted);font-size:.76rem;}
+.booster{font-weight:700;}
+.tag{
+  display:inline-block;background:var(--boost);border:1px solid var(--boost-line);
+  color:#8a6420;border-radius:6px;padding:1px 6px;font-size:.7rem;
+  font-weight:600;margin-top:3px;
+}
+.post{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.bonusline{display:inline-block;font-size:.72rem;font-weight:700;color:#8a6420;margin-top:2px;}
+td.pts{white-space:nowrap;font-weight:700;color:var(--green);text-align:right;font-variant-numeric:tabular-nums;}
+td.wkmax{white-space:nowrap;font-weight:700;text-align:right;color:var(--zus-blue);font-variant-numeric:tabular-nums;}
+td.total{white-space:nowrap;font-weight:800;text-align:right;color:var(--zus-blue);background:var(--zus-blue-light)!important;font-variant-numeric:tabular-nums;}
+
+/* phase divider: gold top-border on the first row of each new booster phase
+   (skip the very first row — its border would read as a gold underline on the header) */
+.tablecard tbody tr.phase-start:not(:first-child) td{border-top:2px solid var(--zus-gold);}
+
+/* dim non-current rows so focus lands on this week (only when a week is active) */
+.tablecard.has-current tbody tr:not(.current){opacity:.7;}
+
+/* current week: bold inner outline (inset shadow won't overflow the table) + highlight */
+.tablecard tbody tr.current td{
+  background:#fffbe6;
+  border-top-color:var(--ink); /* collapse the default 1px line into the outline — no sliver gap */
+  box-shadow:inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);
+}
+.tablecard tbody tr.current td:first-child{box-shadow:inset 3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
+.tablecard tbody tr.current td:last-child{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
+.tablecard tbody tr.current td.wk{color:var(--ink);}
+
+/* ---------- Legend / footer ---------- */
+.legend{
+  margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px;font-size:.78rem;color:var(--muted);
+}
+.legend h2{margin:0 0 8px;font-size:.9rem;color:var(--zus-blue);}
+.legend ul{margin:6px 0 0;padding-left:18px;}
+.legend li{margin-bottom:4px;}
+.legend b{color:var(--ink);}
+.req{color:var(--red);font-weight:700;}
+.opt{color:var(--zus-gold);font-weight:700;}
+
+@media (max-width:520px){
+  header.hero h1{font-size:1.25rem;}
+  body{padding:14px 8px 40px;}
+  .pill-row{grid-template-columns:1fr;}
+}
+@media print{
+  body{background:#fff;padding:0;}
+  header.hero{box-shadow:none;}
+  .scroll{overflow:visible;}
+  table{min-width:0;font-size:9pt;}
+}
