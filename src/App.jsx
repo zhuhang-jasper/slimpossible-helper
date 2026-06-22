@@ -44,6 +44,9 @@ export default function App() {
                     🔁 Do these EVERY week (W1–W14){" "}
                     <span className="maxbadge">up to {WEEK_MAX} pts/wk</span>
                 </h2>
+                <p className="scope everyweek-scope">
+                    — All submissions go to the Lark Base Tracker
+                </p>
                 <div className="pill-row">
                     {WEEKLY_TASKS.map((t) => (
                         <div className="pill" key={t.title}>
