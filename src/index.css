@@ -39,6 +39,34 @@ header.hero h1{margin:0;font-size:1.5rem;letter-spacing:-.01em;}
 header.hero .sub{margin-top:6px;font-size:.86rem;opacity:.9;}
 header.hero .gold{color:#f0cf85;font-weight:700;}
 
+/* ---------- This week's suggested plan ---------- */
+.weekplan{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px;margin-bottom:14px;
+}
+.weekplan h2{margin:0 0 10px;font-size:.95rem;color:var(--zus-blue);}
+.wp-sub{font-size:.7rem;font-weight:500;color:var(--muted);}
+.wp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.wp-day{
+  border:1px solid var(--line);border-radius:8px;background:#fafbff;
+  padding:6px 5px;display:flex;flex-direction:column;gap:3px;min-width:0;
+}
+.wp-dow{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);}
+.wp-task{font-size:.7rem;font-weight:600;line-height:1.25;}
+.wp-cue{font-size:.6rem;font-weight:500;color:var(--muted);line-height:1.2;margin-top:1px;}
+.wp-day.report{background:var(--zus-blue-light);border-color:#c3cbef;}
+.wp-day.report .wp-task{color:var(--zus-blue);}
+/* green left bezel = "counts as a workout" (plain workouts + the booster combo) */
+.wp-day.workout{background:#e7f5ed;border:1px solid #bfe3cd;border-left:3px solid var(--green);}
+.wp-day.workout .wp-task{color:var(--green);}
+.wp-day.booster{background:var(--boost);border-color:var(--boost-line);}
+.wp-day.booster .wp-task{color:#8a6420;}
+/* combo = booster that also counts as a workout: gold (booster) base + green workout bezel */
+.wp-day.combo{background:var(--boost);border:1px solid var(--boost-line);border-left:3px solid var(--green);}
+.wp-day.combo .wp-task{color:#8a6420;}
+.wp-day.rest{opacity:.7;}
+.wp-day.rest .wp-task{color:var(--muted);font-weight:500;}
+
 /* ---------- Weekly recurring summary ---------- */
 .recurring{
   background:#fff;border:1px solid var(--line);border-radius:14px;
@@ -144,6 +172,7 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
   header.hero h1{font-size:1.25rem;}
   body{padding:14px 8px 40px;}
   .pill-row{grid-template-columns:1fr;}
+  .wp-grid{grid-template-columns:repeat(2,1fr);} /* 7-day strip wraps to 2 cols on phones */
 
   /* table fits the viewport — drop the min-width and the least-essential column */
   .tablecard table{min-width:0;font-size:.74rem;}
@@ -151,6 +180,8 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
   .tablecard tbody td{padding:6px 6px;}
   .tablecard th:last-child,        /* Acc. total header */
   .tablecard td.total{display:none;} /* hide cumulative total on mobile */
+  /* Acc.total is hidden, so the current-week right border must move to Wk target */
+  .tablecard tbody tr.current td.wkmax{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
   .wkmax-base{font-size:.7rem;}    /* keep the 200+30+10 breakdown, just smaller */
   .wkmax-base b{display:block;margin-left:0;} /* stack 200 / +30 / +10 vertically */
   .tag{white-space:normal;}

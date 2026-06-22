@@ -75,6 +75,48 @@ export const BOOSTER_MAX = 40; // booster portion (Lark + ZUS Moments)
 export const WEEK_MAX = 240; // = 200 baseline (100 steps + 100 workouts) + 40 booster
 export const BIWEEKLY_MAX = WEEK_MAX * 2; // 480 over each 2-week booster phase
 
+// Per-phase booster meta for the day-plan strip.
+//   isWorkout: the booster itself counts as one of the 3 weekly workouts
+//              (so it fills a workout slot instead of needing its own day).
+//   proof: the actionable / evidence to capture for that booster.
+export const BOOSTER_META = {
+    buddy: { isWorkout: true, proof: "photo/video during the walk/jog" },
+    snapfuel: { isWorkout: false, proof: "time-lapse cooking video" },
+    pace1: { isWorkout: true, proof: "screenshot: 2km distance + time" },
+    hydration: { isWorkout: false, proof: "15–30s clip: sip + 1 health fact" },
+    pace2: { isWorkout: true, proof: "screenshot: 2km distance + time" },
+    zen: { isWorkout: true, proof: "15–30s timelapse of the session" },
+    mind: { isWorkout: false, proof: "reflection or photo at the talk" },
+};
+
+// Build this week's suggested Mon–Sun plan (NOT mandated by ZUS — a sensible spread).
+// If the booster is itself a workout, it fills one of the 3 workout slots (Sat),
+// so you only do 2 plain workouts + the booster. Otherwise the booster gets its own day.
+// Returns [{ day, kind, label, cue }]; kind drives styling.
+export function buildDayPlan(booster) {
+    const m = BOOSTER_META[booster.phase] || {};
+    const plan = [
+        { day: "Mon", kind: "report", label: "Reporting + weigh-in", cue: "log weight, steps, workouts, booster" },
+        { day: "Tue", kind: "workout", label: "Workout 1", cue: "face photo/video" },
+        { day: "Thu", kind: "workout", label: "Workout 2", cue: "face photo/video" },
+    ];
+    if (m.isWorkout) {
+        // booster itself counts as one of the 3 workouts → only 2 other workouts needed
+        plan.push({ day: "Sat", kind: "combo", label: booster.name, cue: `counts as a workout · ${m.proof}` });
+        plan.push({ day: "Wed", kind: "rest", label: "Free / rest", cue: "" });
+        plan.push({ day: "Fri", kind: "rest", label: "Free / rest", cue: "" });
+    } else {
+        // booster is its own task; still do a 3rd separate workout
+        plan.push({ day: "Sat", kind: "workout", label: "Workout 3", cue: "face photo/video" });
+        plan.push({ day: "Wed", kind: "booster", label: booster.name, cue: m.proof });
+        plan.push({ day: "Fri", kind: "rest", label: "Free / rest", cue: "" });
+    }
+    plan.push({ day: "Sun", kind: "rest", label: "Rest", cue: "" });
+    // keep Mon–Sun order
+    const order = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    return plan.sort((a, b) => order.indexOf(a.day) - order.indexOf(b.day));
+}
+
 // Bi-weekly booster rotation. phase = colour-band grouping.
 export const BOOSTERS = [
     {

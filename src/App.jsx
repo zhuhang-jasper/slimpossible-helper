@@ -5,6 +5,7 @@ import {
     WEEK_MAX,
     BIWEEKLY_MAX,
     CHALLENGE_START,
+    buildDayPlan,
 } from "./data.js";
 
 export default function App() {
@@ -108,6 +109,29 @@ export default function App() {
                     ))}
                 </div>
             </section>
+
+            {/* This week's suggested day-by-day plan (only during the challenge) */}
+            {currentWeek >= 0 && (
+                <section className="weekplan">
+                    <h2>
+                        🗓️ This week — {BOOSTERS[currentWeek].wk}{" "}
+                        <span className="wp-sub">
+                            suggested plan · {BOOSTERS[currentWeek].dates}
+                        </span>
+                    </h2>
+                    <div className="wp-grid">
+                        {buildDayPlan(BOOSTERS[currentWeek]).map((d) => (
+                            <div className={`wp-day ${d.kind}`} key={d.day}>
+                                <span className="wp-dow">{d.day}</span>
+                                <span className="wp-task">{d.label}</span>
+                                {d.cue && (
+                                    <span className="wp-cue">{d.cue}</span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* Booster rotation table */}
             <div className="tablecard">

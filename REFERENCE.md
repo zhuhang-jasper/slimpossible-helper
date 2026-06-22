@@ -11,6 +11,14 @@ instead of re-parsing the PDF/sheet. Last cross-checked: 2026-06-22 — `data.js
   does NOT drop fields — earlier "reverts" were actually a stale dev server / browser cache on
   the wrong port. Edits made then formatted are fine; just hard-refresh the right port to verify.
 
+## Day-by-day plan (`DAY_PLAN` in data.js)
+The Google Sheet is a 14-week × 7-day (Mon–Sun) grid + Booster column — a daily playbook,
+complementary to the app's points reference. The app surfaces the **current week only** as a
+7-day strip ("This week" panel above the booster table). The day split is a **suggested
+template, NOT mandated by ZUS**: Mon = reporting/weigh-in, Tue/Thu/Sat = Workout 1/2/3,
+Wed/Fri = booster (for boosters that aren't a workout), Sun = rest. `{b}` in a label is
+replaced with the week's booster name at render.
+
 ## Challenge frame
 - 14 weeks, **22 Jun – 27 Sep 2026**. W1 Monday = 22 Jun. Weeks are exactly 7 days.
 - **Final Report: 28 Sep** (sheet only; the day after W14 ends).
