@@ -44,22 +44,22 @@ export const WEEKLY_TASKS = [
 // Bonus actionables — BOOSTERS ONLY
 export const BONUS_TASKS = [
     {
+        icon: "📲",
+        title: "Join booster (Lark Base)",
+        badge: "30 pts",
+        desc: "Complete the week's booster and upload your proof to the Lark Base Tracker. Required — earns the base 30 pts.",
+    },
+    {
         icon: "📣",
         title: "Post on ZUS Moments",
-        badge: "30 → 40",
-        desc: "On a booster, also posting to ZUS Moments with the hashtags lifts that booster from 30 → 40 pts. Tag #ChampionsFuelChampions + the week's booster hashtag.",
+        badge: "+10 pts",
+        desc: "On a booster, also posting to ZUS Moments with the hashtags lifts that booster from 30 → 40 pts.",
     },
     {
         icon: "🥤",
         title: "Show your ZUS merch",
         badge: "in clip",
         desc: "In Pace / Hydration booster clips, feature your ZUS tumbler, cup, canned drink, or merch to strengthen the submission.",
-    },
-    {
-        icon: "👥",
-        title: "Tag colleagues",
-        badge: "Buddy Steps",
-        desc: "On the Buddy Steps booster, tag colleagues in your ZUS Moments post to count toward the bonus.",
     },
 ];
 
@@ -85,7 +85,7 @@ export const BOOSTERS = [
         name: "Buddy Steps",
         desc: "Walk/jog with a buddy (incl. family/pets). Photo or video during the activity.",
         bonus: "Post on ZUS Moments → +10 pts",
-        extra: "Tag a colleague (required for +10)",
+        extra: "Tag a colleague",
         tags: "#ZUSBuddySteps #ChampionsFuelChampions",
         pts: "30 / 40",
     },

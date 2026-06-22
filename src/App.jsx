@@ -84,12 +84,13 @@ export default function App() {
             {/* Bonus actionables — boosters only */}
             <section className="recurring bonus">
                 <h2>
-                    🌟 Bonus actionables{" "}
-                    <span className="scope">
-                        — BOOSTERS ONLY (does NOT apply to weigh-in / steps /
-                        workouts)
-                    </span>
+                    <span className="h2-title">🌟 Bonus actionables</span>
+                    <span className="maxbadge bonus-max">up to 40++ pts/wk</span>
                 </h2>
+                <p className="scope">
+                    — BOOSTERS ONLY (does NOT apply to weigh-in / steps /
+                    workouts)
+                </p>
                 <div className="pill-row">
                     {BONUS_TASKS.map((t) => (
                         <div className="pill" key={t.title}>
