@@ -97,13 +97,34 @@ export const BOOSTER_META = {
 export function buildDayPlan(booster) {
     const m = BOOSTER_META[booster.phase] || {};
     const actions = [
-        { kind: "report", label: "Mon: weigh-in + report", cue: "scale (feet + display visible) · log steps, workouts, booster" },
+        {
+            kind: "report",
+            label: "Mon: Weigh-in + report",
+            cue: "scale (feet + display visible) · log steps, workouts, booster",
+        },
     ];
+    actions.push({
+        kind: "steps",
+        label: "Keep walking daily",
+        cue: "aim ~6k+/day",
+    });
     if (m.isWorkout) {
-        actions.push({ kind: "workout", label: "2 workouts", cue: "separate days · face photo/video" });
-        actions.push({ kind: "combo", label: booster.name, cue: `counts as a workout · ${m.proof}` });
+        actions.push({
+            kind: "workout",
+            label: "2 workouts",
+            cue: "separate days · face photo/video",
+        });
+        actions.push({
+            kind: "combo",
+            label: booster.name,
+            cue: `counts as a workout · ${m.proof}`,
+        });
     } else {
-        actions.push({ kind: "workout", label: "3 workouts", cue: "separate days · face photo/video" });
+        actions.push({
+            kind: "workout",
+            label: "3 workouts",
+            cue: "separate days · face photo/video",
+        });
         actions.push({ kind: "booster", label: booster.name, cue: m.proof });
     }
     return actions;

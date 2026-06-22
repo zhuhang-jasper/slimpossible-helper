@@ -43,7 +43,10 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
 .wkrow{cursor:pointer;}
 /* slightly dim collapsed weeks; current + expanded weeks stay full opacity */
 .tablecard tbody tr.wkrow:not(.current):not(.open){opacity:.6;}
-.wkrow:hover{background:#f3f5ff;opacity:1;}
+/* hover: apply at td level so it overrides nth-child striping + the total cell uniformly
+   (only on collapsed, non-current rows so it doesn't fight their own backgrounds) */
+.tablecard tbody tr.wkrow:not(.current):not(.open):hover{opacity:1;}
+.tablecard tbody tr.wkrow:not(.current):not(.open):hover > td{background:#f2f0ea !important;}
 .wkrow .caret{display:inline-block;margin-right:3px;color:var(--ink);font-size:.9em;}
 /* expanded week: distinct tint on both the week row and its plan row, so the
    open week clearly stands apart from collapsed rows (overrides nth-child striping) */
@@ -51,11 +54,14 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
 .tablecard tbody tr.wkrow.open.current > td{border-bottom:0;}
 .tablecard tbody tr.planrow > td{padding:2px 12px 12px !important;background:#f2f0ea;border-top:0 !important;}
 .tablecard tbody tr.planrow.current > td{background:#fffbe6;}
+/* expanded week row: drop the 1px grey border-top so the blue inset outline is the
+   only top edge (no grey sliver above the box) */
+.tablecard tbody tr.wkrow.open:not(.current) > td{border-top:0;}
 /* blue border wrapping the expanded (non-current) week + its plan row as one unit */
-.tablecard tbody tr.wkrow.open:not(.current) > td{box-shadow:inset 0 2px 0 var(--zus-blue);}
-.tablecard tbody tr.wkrow.open:not(.current) > td:first-child{box-shadow:inset 2px 0 0 var(--zus-blue), inset 0 2px 0 var(--zus-blue);}
-.tablecard tbody tr.wkrow.open:not(.current) > td:last-child{box-shadow:inset -2px 0 0 var(--zus-blue), inset 0 2px 0 var(--zus-blue);}
-.tablecard tbody tr.planrow:not(.current) > td{box-shadow:inset 2px 0 0 var(--zus-blue), inset -2px 0 0 var(--zus-blue), inset 0 -2px 0 var(--zus-blue);}
+.tablecard tbody tr.wkrow.open:not(.current) > td{box-shadow:inset 0 3px 0 var(--zus-blue);}
+.tablecard tbody tr.wkrow.open:not(.current) > td:first-child{box-shadow:inset 3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
+.tablecard tbody tr.wkrow.open:not(.current) > td:last-child{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
+.tablecard tbody tr.planrow:not(.current) > td{box-shadow:inset 3px 0 0 var(--zus-blue), inset -3px 0 0 var(--zus-blue), inset 0 -3px 0 var(--zus-blue);}
 .wp-strip{display:flex;flex-direction:column;gap:5px;}
 .wp-actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;}
 .wp-act{
@@ -68,8 +74,8 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
 /* every card gets a colour-coded left bezel matching its category */
 .wp-act.report{background:var(--zus-blue-light);border:1px solid #c3cbef;border-left:3px solid var(--zus-blue);}
 .wp-act.report .wp-clabel{color:var(--zus-blue);}
-.wp-act.workout{background:#e7f5ed;border:1px solid #bfe3cd;border-left:3px solid var(--green);}
-.wp-act.workout .wp-clabel{color:var(--green);}
+.wp-act.workout,.wp-act.steps{background:#e7f5ed;border:1px solid #bfe3cd;border-left:3px solid var(--green);}
+.wp-act.workout .wp-clabel,.wp-act.steps .wp-clabel{color:var(--green);}
 .wp-act.booster{background:var(--boost);border:1px solid var(--boost-line);border-left:3px solid var(--zus-gold);}
 .wp-act.booster .wp-clabel{color:#8a6420;}
 /* combo = booster that also counts as a workout: gold fill, green bezel for the workout double-duty */
@@ -157,22 +163,20 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
 /* when an expanded week is also a phase start, the blue outline replaces the gold
    divider on that row (avoids two stacked lines at the top edge) */
 .tablecard tbody tr.phase-start.open td{border-top-color:transparent;}
+/* if a phase-start row directly follows an expanded week's plan row, hide its gold
+   top border too — the blue outline's bottom edge already marks that boundary */
+.tablecard tbody tr.planrow + tr.phase-start td{border-top-color:transparent;}
 
-/* current week: bold inner outline (inset shadow won't overflow the table) + highlight */
-.tablecard tbody tr.current td{
-  background:#fffbe6;
-  border-top-color:var(--ink); /* collapse the default 1px line into the outline — no sliver gap */
-  box-shadow:inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);
-}
-.tablecard tbody tr.current td:first-child{box-shadow:inset 3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
-.tablecard tbody tr.current td:last-child{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
+/* current week: identified by a distinct yellow background (no outline when collapsed) */
+.tablecard tbody tr.current td{background:#fff2c2;}
 .tablecard tbody tr.current td.wk{color:var(--ink);}
-/* when the current week's plan is expanded, the outline spans both rows:
-   drop the week row's bottom edge and let the plan row close it off */
-.tablecard tbody tr.current.open td{box-shadow:inset 0 3px 0 var(--ink);}
-.tablecard tbody tr.current.open td:first-child{box-shadow:inset 3px 0 0 var(--ink), inset 0 3px 0 var(--ink);}
-.tablecard tbody tr.current.open td:last-child{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink);}
-.tablecard tbody tr.planrow.current td{background:#fffbe6;box-shadow:inset 3px 0 0 var(--ink), inset -3px 0 0 var(--ink), inset 0 -3px 0 var(--ink);}
+.tablecard tbody tr.planrow.current td{background:#fff2c2;}
+/* when the current week is expanded, give it the same blue outline as other weeks,
+   spanning the week row + plan row as one box */
+.tablecard tbody tr.current.open > td{border-top:0;box-shadow:inset 0 3px 0 var(--zus-blue);}
+.tablecard tbody tr.current.open > td:first-child{box-shadow:inset 3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
+.tablecard tbody tr.current.open > td:last-child{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
+.tablecard tbody tr.planrow.current > td{box-shadow:inset 3px 0 0 var(--zus-blue), inset -3px 0 0 var(--zus-blue), inset 0 -3px 0 var(--zus-blue);}
 
 /* ---------- Legend / footer ---------- */
 .legend{
@@ -198,11 +202,9 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
   .tablecard tbody td{padding:6px 6px;}
   .tablecard th:last-child,        /* Acc. total header */
   .tablecard td.total{display:none;} /* hide cumulative total on mobile */
-  /* Acc.total is hidden, so the current-week right border must move to Wk target */
-  .tablecard tbody tr.current td.wkmax{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
-  .tablecard tbody tr.current.open td.wkmax{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink);} /* no bottom when plan open */
-  /* same right-border relocation for the expanded (non-current) week's blue outline */
-  .tablecard tbody tr.wkrow.open:not(.current) td.wkmax{box-shadow:inset -2px 0 0 var(--zus-blue), inset 0 2px 0 var(--zus-blue);}
+  /* Acc.total hidden, so the expanded week's right border must move to Wk target */
+  .tablecard tbody tr.wkrow.open:not(.current) td.wkmax{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
+  .tablecard tbody tr.current.open td.wkmax{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
   .wkmax-base{font-size:.7rem;}    /* keep the 200+30+10 breakdown, just smaller */
   .wkmax-base b{display:block;margin-left:0;} /* stack 200 / +30 / +10 vertically */
   .tag{white-space:normal;}
