@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef, Fragment } from "react";
 import {
     WEEKLY_TASKS,
     BONUS_TASKS,
@@ -27,6 +28,32 @@ export default function App() {
         return { ...b, total: acc, isCurrent: i === currentWeek, phaseStart };
     });
     const fmt = (n) => n.toLocaleString("en-US");
+
+    // Expandable 7-day plan: which week index is open (current week by default).
+    const [openWeek, setOpenWeek] = useState(currentWeek);
+    const rowRefs = useRef({});
+    const scrollRowIntoView = (i) => {
+        const row = rowRefs.current[i];
+        if (!row) return;
+        // account for the sticky table header so the row isn't hidden under it
+        const headerH =
+            document.querySelector(".tablecard thead")?.offsetHeight || 0;
+        const top =
+            row.getBoundingClientRect().top + window.scrollY - headerH;
+        window.scrollTo({ top, behavior: "smooth" });
+    };
+    const toggleWeek = (i) =>
+        setOpenWeek((cur) => {
+            const next = cur === i ? -1 : i;
+            // scroll the row into view when it opens (after the plan row renders)
+            if (next === i) requestAnimationFrame(() => scrollRowIntoView(i));
+            return next;
+        });
+
+    // Auto-scroll the current week into view on load/refresh.
+    useEffect(() => {
+        if (currentWeek >= 0) scrollRowIntoView(currentWeek);
+    }, []);
 
     return (
         <div className="wrap">
@@ -110,29 +137,6 @@ export default function App() {
                 </div>
             </section>
 
-            {/* This week's suggested day-by-day plan (only during the challenge) */}
-            {currentWeek >= 0 && (
-                <section className="weekplan">
-                    <h2>
-                        🗓️ This week — {BOOSTERS[currentWeek].wk}{" "}
-                        <span className="wp-sub">
-                            suggested plan · {BOOSTERS[currentWeek].dates}
-                        </span>
-                    </h2>
-                    <div className="wp-grid">
-                        {buildDayPlan(BOOSTERS[currentWeek]).map((d) => (
-                            <div className={`wp-day ${d.kind}`} key={d.day}>
-                                <span className="wp-dow">{d.day}</span>
-                                <span className="wp-task">{d.label}</span>
-                                {d.cue && (
-                                    <span className="wp-cue">{d.cue}</span>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
             {/* Booster rotation table */}
             <div className="tablecard">
                 <div className="scroll">
@@ -148,55 +152,116 @@ export default function App() {
                             </tr>
                         </thead>
                         <tbody>
-                            {rows.map((b) => (
-                                <tr
-                                    key={b.wk}
-                                    data-phase={b.phase}
-                                    className={`${b.isCurrent ? "current" : ""}${b.phaseStart ? " phase-start" : ""}`}
-                                >
-                                    <td className="wk">
-                                        {b.isCurrent ? "▶ " : ""}
-                                        {b.wk}
-                                        <span className="dates">{b.dates}</span>
-                                    </td>
-                                    <td>
-                                        <span className="booster">
-                                            {b.icon} {b.name}
-                                        </span>
-                                        <br />
-                                        <span className="post">{b.desc}</span>
-                                        <br />
-                                        {b.bonus && (
-                                            <>
-                                                <span className="bonusline">
-                                                    🌟 Bonus: {b.bonus}
+                            {rows.map((b, i) => {
+                                const open = openWeek === i;
+                                return (
+                                    <Fragment key={b.wk}>
+                                        <tr
+                                            ref={(el) =>
+                                                (rowRefs.current[i] = el)
+                                            }
+                                            data-phase={b.phase}
+                                            onClick={() => toggleWeek(i)}
+                                            className={`wkrow${b.isCurrent ? " current" : ""}${b.phaseStart ? " phase-start" : ""}${open ? " open" : ""}`}
+                                        >
+                                            <td className="wk">
+                                                {b.isCurrent && (
+                                                    <span className="caret">
+                                                        {open ? "▼" : "▶"}
+                                                    </span>
+                                                )}
+                                                {b.wk}
+                                                <span className="dates">
+                                                    {b.dates}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span className="booster">
+                                                    {b.icon} {b.name}
                                                 </span>
                                                 <br />
-                                            </>
-                                        )}
-                                        {b.extra && (
-                                            <>
-                                                <span className="extraline">
-                                                    ✨ {b.extra}
+                                                <span className="post">
+                                                    {b.desc}
                                                 </span>
                                                 <br />
-                                            </>
+                                                {b.bonus && (
+                                                    <>
+                                                        <span className="bonusline">
+                                                            🌟 Bonus: {b.bonus}
+                                                        </span>
+                                                        <br />
+                                                    </>
+                                                )}
+                                                {b.extra && (
+                                                    <>
+                                                        <span className="extraline">
+                                                            ✨ {b.extra}
+                                                        </span>
+                                                        <br />
+                                                    </>
+                                                )}
+                                                <span className="tag">
+                                                    {b.tags}
+                                                </span>
+                                            </td>
+                                            <td className="wkmax">
+                                                <span className="wkmax-total">
+                                                    {WEEK_MAX}
+                                                </span>
+                                                <span className="wkmax-base">
+                                                    <b className="p-base">
+                                                        200
+                                                    </b>
+                                                    <b className="p-boost">
+                                                        +30
+                                                    </b>
+                                                    <b className="p-bonus">
+                                                        +10
+                                                    </b>
+                                                </span>
+                                            </td>
+                                            <td className="total">
+                                                {fmt(b.total)}
+                                            </td>
+                                        </tr>
+                                        {open && (
+                                            <tr
+                                                className={`planrow${b.isCurrent ? " current" : ""}`}
+                                            >
+                                                <td colSpan={4}>
+                                                    <div className="wp-strip">
+                                                        <ul className="wp-actions">
+                                                            {buildDayPlan(b).map(
+                                                                (d) => (
+                                                                    <li
+                                                                        key={
+                                                                            d.label
+                                                                        }
+                                                                        className={`wp-act ${d.kind}`}
+                                                                    >
+                                                                        <span className="wp-clabel">
+                                                                            {
+                                                                                d.label
+                                                                            }
+                                                                        </span>
+                                                                        {d.cue && (
+                                                                            <span className="wp-ccue">
+                                                                                {
+                                                                                    d.cue
+                                                                                }
+                                                                            </span>
+                                                                        )}
+                                                                    </li>
+                                                                ),
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         )}
-                                        <span className="tag">{b.tags}</span>
-                                    </td>
-                                    <td className="wkmax">
-                                        <span className="wkmax-total">
-                                            {WEEK_MAX}
-                                        </span>
-                                        <span className="wkmax-base">
-                                            <b className="p-base">200</b>
-                                            <b className="p-boost">+30</b>
-                                            <b className="p-bonus">+10</b>
-                                        </span>
-                                    </td>
-                                    <td className="total">{fmt(b.total)}</td>
-                                </tr>
-                            ))}
+                                    </Fragment>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>

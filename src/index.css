@@ -39,33 +39,42 @@ header.hero h1{margin:0;font-size:1.5rem;letter-spacing:-.01em;}
 header.hero .sub{margin-top:6px;font-size:.86rem;opacity:.9;}
 header.hero .gold{color:#f0cf85;font-weight:700;}
 
-/* ---------- This week's suggested plan ---------- */
-.weekplan{
-  background:#fff;border:1px solid var(--line);border-radius:14px;
-  padding:14px 16px;margin-bottom:14px;
+/* ---------- Expandable action checklist (inside the booster table) ---------- */
+.wkrow{cursor:pointer;}
+/* slightly dim collapsed weeks; current + expanded weeks stay full opacity */
+.tablecard tbody tr.wkrow:not(.current):not(.open){opacity:.6;}
+.wkrow:hover{background:#f3f5ff;opacity:1;}
+.wkrow .caret{display:inline-block;margin-right:3px;color:var(--ink);font-size:.9em;}
+/* expanded week: distinct tint on both the week row and its plan row, so the
+   open week clearly stands apart from collapsed rows (overrides nth-child striping) */
+.tablecard tbody tr.wkrow.open:not(.current) > td{border-bottom:0;background:#f2f0ea;}
+.tablecard tbody tr.wkrow.open.current > td{border-bottom:0;}
+.tablecard tbody tr.planrow > td{padding:2px 12px 12px !important;background:#f2f0ea;border-top:0 !important;}
+.tablecard tbody tr.planrow.current > td{background:#fffbe6;}
+/* blue border wrapping the expanded (non-current) week + its plan row as one unit */
+.tablecard tbody tr.wkrow.open:not(.current) > td{box-shadow:inset 0 2px 0 var(--zus-blue);}
+.tablecard tbody tr.wkrow.open:not(.current) > td:first-child{box-shadow:inset 2px 0 0 var(--zus-blue), inset 0 2px 0 var(--zus-blue);}
+.tablecard tbody tr.wkrow.open:not(.current) > td:last-child{box-shadow:inset -2px 0 0 var(--zus-blue), inset 0 2px 0 var(--zus-blue);}
+.tablecard tbody tr.planrow:not(.current) > td{box-shadow:inset 2px 0 0 var(--zus-blue), inset -2px 0 0 var(--zus-blue), inset 0 -2px 0 var(--zus-blue);}
+.wp-strip{display:flex;flex-direction:column;gap:5px;}
+.wp-actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;}
+.wp-act{
+  display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
+  border:1px solid var(--line);border-radius:6px;background:#fff;
+  padding:4px 8px;font-size:.7rem;line-height:1.3;
 }
-.weekplan h2{margin:0 0 10px;font-size:.95rem;color:var(--zus-blue);}
-.wp-sub{font-size:.7rem;font-weight:500;color:var(--muted);}
-.wp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
-.wp-day{
-  border:1px solid var(--line);border-radius:8px;background:#fafbff;
-  padding:6px 5px;display:flex;flex-direction:column;gap:3px;min-width:0;
-}
-.wp-dow{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);}
-.wp-task{font-size:.7rem;font-weight:600;line-height:1.25;}
-.wp-cue{font-size:.6rem;font-weight:500;color:var(--muted);line-height:1.2;margin-top:1px;}
-.wp-day.report{background:var(--zus-blue-light);border-color:#c3cbef;}
-.wp-day.report .wp-task{color:var(--zus-blue);}
-/* green left bezel = "counts as a workout" (plain workouts + the booster combo) */
-.wp-day.workout{background:#e7f5ed;border:1px solid #bfe3cd;border-left:3px solid var(--green);}
-.wp-day.workout .wp-task{color:var(--green);}
-.wp-day.booster{background:var(--boost);border-color:var(--boost-line);}
-.wp-day.booster .wp-task{color:#8a6420;}
-/* combo = booster that also counts as a workout: gold (booster) base + green workout bezel */
-.wp-day.combo{background:var(--boost);border:1px solid var(--boost-line);border-left:3px solid var(--green);}
-.wp-day.combo .wp-task{color:#8a6420;}
-.wp-day.rest{opacity:.7;}
-.wp-day.rest .wp-task{color:var(--muted);font-weight:500;}
+.wp-clabel{font-weight:700;}
+.wp-ccue{color:var(--muted);font-weight:500;font-size:.66rem;}
+/* every card gets a colour-coded left bezel matching its category */
+.wp-act.report{background:var(--zus-blue-light);border:1px solid #c3cbef;border-left:3px solid var(--zus-blue);}
+.wp-act.report .wp-clabel{color:var(--zus-blue);}
+.wp-act.workout{background:#e7f5ed;border:1px solid #bfe3cd;border-left:3px solid var(--green);}
+.wp-act.workout .wp-clabel{color:var(--green);}
+.wp-act.booster{background:var(--boost);border:1px solid var(--boost-line);border-left:3px solid var(--zus-gold);}
+.wp-act.booster .wp-clabel{color:#8a6420;}
+/* combo = booster that also counts as a workout: gold fill, green bezel for the workout double-duty */
+.wp-act.combo{background:var(--boost);border:1px solid var(--boost-line);border-left:3px solid var(--green);}
+.wp-act.combo .wp-clabel{color:#8a6420;}
 
 /* ---------- Weekly recurring summary ---------- */
 .recurring{
@@ -104,17 +113,18 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
 .everyweek-scope{color:var(--muted);}
 
 /* ---------- Table ---------- */
+/* NOTE: no overflow:hidden here — it would break the sticky header.
+   Corners are rounded via the header cells + last row instead. */
+/* square corners — no border-radius here (also keeps the sticky header simple) */
 .tablecard{
-  background:#fff;border:1px solid var(--line);border-radius:14px;
-  overflow:hidden;
+  background:#fff;border:1px solid var(--line);
 }
-.scroll{overflow-x:auto;}
 .tablecard table{border-collapse:collapse;width:100%;font-size:.8rem;min-width:560px;}
 .tablecard thead th{
   background:var(--zus-blue);color:#fff;
   padding:9px 10px;text-align:left;font-weight:600;
   font-size:.74rem;letter-spacing:.02em;text-transform:uppercase;
-  position:sticky;top:0;
+  position:sticky;top:0;z-index:2;
 }
 .tablecard tbody td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;}
 .tablecard tbody tr:nth-child(even){background:#fafbff;}
@@ -144,6 +154,9 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
 /* phase divider: gold top-border on the first row of each new booster phase
    (skip the very first row — its border would read as a gold underline on the header) */
 .tablecard tbody tr.phase-start:not(:first-child) td{border-top:2px solid var(--zus-gold);}
+/* when an expanded week is also a phase start, the blue outline replaces the gold
+   divider on that row (avoids two stacked lines at the top edge) */
+.tablecard tbody tr.phase-start.open td{border-top-color:transparent;}
 
 /* current week: bold inner outline (inset shadow won't overflow the table) + highlight */
 .tablecard tbody tr.current td{
@@ -154,6 +167,12 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
 .tablecard tbody tr.current td:first-child{box-shadow:inset 3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
 .tablecard tbody tr.current td:last-child{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
 .tablecard tbody tr.current td.wk{color:var(--ink);}
+/* when the current week's plan is expanded, the outline spans both rows:
+   drop the week row's bottom edge and let the plan row close it off */
+.tablecard tbody tr.current.open td{box-shadow:inset 0 3px 0 var(--ink);}
+.tablecard tbody tr.current.open td:first-child{box-shadow:inset 3px 0 0 var(--ink), inset 0 3px 0 var(--ink);}
+.tablecard tbody tr.current.open td:last-child{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink);}
+.tablecard tbody tr.planrow.current td{background:#fffbe6;box-shadow:inset 3px 0 0 var(--ink), inset -3px 0 0 var(--ink), inset 0 -3px 0 var(--ink);}
 
 /* ---------- Legend / footer ---------- */
 .legend{
@@ -172,7 +191,6 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
   header.hero h1{font-size:1.25rem;}
   body{padding:14px 8px 40px;}
   .pill-row{grid-template-columns:1fr;}
-  .wp-grid{grid-template-columns:repeat(2,1fr);} /* 7-day strip wraps to 2 cols on phones */
 
   /* table fits the viewport — drop the min-width and the least-essential column */
   .tablecard table{min-width:0;font-size:.74rem;}
@@ -182,14 +200,18 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
   .tablecard td.total{display:none;} /* hide cumulative total on mobile */
   /* Acc.total is hidden, so the current-week right border must move to Wk target */
   .tablecard tbody tr.current td.wkmax{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink), inset 0 -3px 0 var(--ink);}
+  .tablecard tbody tr.current.open td.wkmax{box-shadow:inset -3px 0 0 var(--ink), inset 0 3px 0 var(--ink);} /* no bottom when plan open */
+  /* same right-border relocation for the expanded (non-current) week's blue outline */
+  .tablecard tbody tr.wkrow.open:not(.current) td.wkmax{box-shadow:inset -2px 0 0 var(--zus-blue), inset 0 2px 0 var(--zus-blue);}
   .wkmax-base{font-size:.7rem;}    /* keep the 200+30+10 breakdown, just smaller */
   .wkmax-base b{display:block;margin-left:0;} /* stack 200 / +30 / +10 vertically */
   .tag{white-space:normal;}
-  /* let the week column shrink: allow the date to wrap onto multiple lines */
-  td.wk{white-space:normal;}
+  /* week column: allow dates to wrap, but give it enough width to avoid
+     breaking into too many lines on the longer date ranges */
+  td.wk{white-space:normal;min-width:58px;}
   .dates{white-space:normal;word-spacing:-1px;}
   /* tighter corners on small screens */
-  .tablecard,.recurring,.legend,header.hero{border-radius:8px;}
+  .recurring,.legend,header.hero{border-radius:8px;}
   /* legend: match the other section cards' padding/spacing on mobile */
   .legend{padding:14px 16px;line-height:1.5;}
   .legend h2{margin:0 0 10px;}

@@ -13,8 +13,9 @@ instead of re-parsing the PDF/sheet. Last cross-checked: 2026-06-22 — `data.js
 
 ## Day-by-day plan (`DAY_PLAN` in data.js)
 The Google Sheet is a 14-week × 7-day (Mon–Sun) grid + Booster column — a daily playbook,
-complementary to the app's points reference. The app surfaces the **current week only** as a
-7-day strip ("This week" panel above the booster table). The day split is a **suggested
+complementary to the app's points reference. The app surfaces the plan as an **expandable row inside the booster table**: click any week
+row to toggle its 7-day plan (one open at a time); the current week auto-opens and the page
+auto-scrolls to it on load. The day split is a **suggested
 template, NOT mandated by ZUS**: Mon = reporting/weigh-in, Tue/Thu/Sat = Workout 1/2/3,
 Wed/Fri = booster (for boosters that aren't a workout), Sun = rest. `{b}` in a label is
 replaced with the week's booster name at render.

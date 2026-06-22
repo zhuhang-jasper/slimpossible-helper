@@ -89,32 +89,24 @@ export const BOOSTER_META = {
     mind: { isWorkout: false, proof: "reflection or photo at the talk" },
 };
 
-// Build this week's suggested Mon–Sun plan (NOT mandated by ZUS — a sensible spread).
-// If the booster is itself a workout, it fills one of the 3 workout slots (Sat),
-// so you only do 2 plain workouts + the booster. Otherwise the booster gets its own day.
-// Returns [{ day, kind, label, cue }]; kind drives styling.
+// Build this week's action checklist (NOT a daily schedule — just the things to do).
+// Always starts with Monday reporting, then weigh-in, workouts, and the booster.
+// If the booster is itself a workout, it counts as one workout (so 2 others + booster);
+// otherwise it's a separate action on top of 3 workouts.
+// Returns [{ kind, label, cue }]; kind drives styling (report / workout / booster / combo).
 export function buildDayPlan(booster) {
     const m = BOOSTER_META[booster.phase] || {};
-    const plan = [
-        { day: "Mon", kind: "report", label: "Reporting + weigh-in", cue: "log weight, steps, workouts, booster" },
-        { day: "Tue", kind: "workout", label: "Workout 1", cue: "face photo/video" },
-        { day: "Thu", kind: "workout", label: "Workout 2", cue: "face photo/video" },
+    const actions = [
+        { kind: "report", label: "Mon: weigh-in + report", cue: "scale (feet + display visible) · log steps, workouts, booster" },
     ];
     if (m.isWorkout) {
-        // booster itself counts as one of the 3 workouts → only 2 other workouts needed
-        plan.push({ day: "Sat", kind: "combo", label: booster.name, cue: `counts as a workout · ${m.proof}` });
-        plan.push({ day: "Wed", kind: "rest", label: "Free / rest", cue: "" });
-        plan.push({ day: "Fri", kind: "rest", label: "Free / rest", cue: "" });
+        actions.push({ kind: "workout", label: "2 workouts", cue: "separate days · face photo/video" });
+        actions.push({ kind: "combo", label: booster.name, cue: `counts as a workout · ${m.proof}` });
     } else {
-        // booster is its own task; still do a 3rd separate workout
-        plan.push({ day: "Sat", kind: "workout", label: "Workout 3", cue: "face photo/video" });
-        plan.push({ day: "Wed", kind: "booster", label: booster.name, cue: m.proof });
-        plan.push({ day: "Fri", kind: "rest", label: "Free / rest", cue: "" });
+        actions.push({ kind: "workout", label: "3 workouts", cue: "separate days · face photo/video" });
+        actions.push({ kind: "booster", label: booster.name, cue: m.proof });
     }
-    plan.push({ day: "Sun", kind: "rest", label: "Rest", cue: "" });
-    // keep Mon–Sun order
-    const order = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    return plan.sort((a, b) => order.indexOf(a.day) - order.indexOf(b.day));
+    return actions;
 }
 
 // Bi-weekly booster rotation. phase = colour-band grouping.
