@@ -20,7 +20,7 @@
     }
   ],
   "start_url": "/slimpossible-helper/",
-  "scope": "/",
+  "scope": "/slimpossible-helper/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#1d2b8a",

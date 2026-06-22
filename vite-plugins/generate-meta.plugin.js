@@ -22,5 +22,5 @@ export const generateMetaPlugin = () => ({
     };
     fs.writeFileSync(path.join(outDir, "meta.json"), `${JSON.stringify(meta, null, 2)}\n`, "utf8");
   },
-  name: "z4b-generate-meta",
+  name: "generate-meta",
 });

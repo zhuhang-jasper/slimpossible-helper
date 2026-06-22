@@ -32,7 +32,6 @@ jobs:
             - 'vite.chunksplit.js'
             - 'vite.config.js'
             - 'vite-plugins/**'
-            - 'env/**'
 
   build:
     name: Build

@@ -14,12 +14,6 @@ const NODE_MODULES_PKG = /\/node_modules\/(@[^/]+\/[^/]+|[^/]+)(?=\/|$)/g;
  * repo's tree only (`package.json` + `package-lock.json`). Add entries when you add matching deps.
  */
 const CHUNK_RULES = [
-  [/^@radix-ui\//, "radix"],
-  [/^chart\.js$/, "chart"],
-  [/^@zumer\/snapdom$/, "snapdom"],
-  [/^lucide-react$/, "lucide"],
-  [/^zustand$/, "zustand"],
-  [/^(clsx|tailwind-merge|class-variance-authority)$/, "ui-utils"],
   [/^(react|react-dom|scheduler|use-sync-external-store)$/, "react-vendor"],
 ];
 

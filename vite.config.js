@@ -10,7 +10,7 @@ import { manualChunks } from "./vite.chunksplit";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Project site: https://<owner>.github.io/egf/ */
+/** Project site: https://<owner>.github.io/slimpossible-helper/ */
 const pagesBase = process.env.GITHUB_PAGES === "true" ? "/slimpossible-helper/" : "/";
 
 export default defineConfig({
