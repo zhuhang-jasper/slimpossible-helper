@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "bradlc.vscode-tailwindcss",
+    "EditorConfig.EditorConfig",
+    "kennylong.kubernetes-yaml-formatter",
+    "joseph-ravenwolfe.kubernetes-yaml-formatter",
+    "lokalise.i18n-ally"
+  ]
+}

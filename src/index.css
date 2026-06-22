@@ -1,235 +1,657 @@
-:root{
-  --zus-blue:#1d2b8a;
-  --zus-blue-light:#e9ecf9;
-  --zus-gold:#c79a3e;
-  --ink:#1a1a2e;
-  --muted:#5a5f7a;
-  --line:#d7dbef;
-  --bg:#f4f5fb;
-  --green:#1f8a4c;
-  --red:#c0392b;
-  --boost:#fff4e0;
-  --boost-line:#e8c98a;
+:root {
+  --zus-blue: #1d2b8a;
+  --zus-blue-light: #e9ecf9;
+  --zus-gold: #c79a3e;
+  --ink: #1a1a2e;
+  --muted: #5a5f7a;
+  --line: #d7dbef;
+  --bg: #f4f5fb;
+  --green: #1f8a4c;
+  --red: #c0392b;
+  --boost: #fff4e0;
+  --boost-line: #e8c98a;
 }
-*{box-sizing:border-box;}
+* {
+  box-sizing: border-box;
+}
 /* Base = mobile (16px). All sizes are rem, so bumping root scales the whole page. */
-html{font-size:100%;}
+html {
+  font-size: 100%;
+}
 /* Desktop: scale everything up ~12% (within the 10–15% target). */
-@media (min-width:720px){ html{font-size:112%;} }
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-  line-height:1.45;
-  padding:24px 16px 56px;
+@media (min-width: 720px) {
+  html {
+    font-size: 112%;
+  }
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.45;
+  padding: 24px 16px 56px;
 }
 /* opaque backdrop behind the sticky hero + table-header zone, so content
    scrolling underneath isn't visible through the gaps. Sits below the bars
    (hero z:10, header z:2) but above table content. */
-body::before{
-  content:"";position:fixed;top:0;left:0;right:0;
-  height:var(--hero-h, 0px);background:var(--bg);z-index:1;
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--hero-h, 0px);
+  background: var(--bg);
+  z-index: 1;
 }
-.wrap{max-width:840px;margin:0 auto;}
+.wrap {
+  max-width: 840px;
+  margin: 0 auto;
+}
 
 /* ---------- Header ---------- */
-header.hero{
-  background:linear-gradient(135deg,var(--zus-blue),#2c3db0);
-  color:#fff;
-  border-radius:16px;
-  padding:22px 24px;
-  margin-bottom:14px;
-  box-shadow:0 6px 20px rgba(29,43,138,.18);
-  position:sticky;top:8px;z-index:10; /* pinned with an 8px gap; table header stacks below via --hero-h */
+header.hero {
+  background: linear-gradient(135deg, var(--zus-blue), #2c3db0);
+  color: #fff;
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 14px;
+  box-shadow: 0 6px 20px rgba(29, 43, 138, 0.18);
+  position: sticky;
+  top: 8px;
+  z-index: 10; /* pinned with an 8px gap; table header stacks below via --hero-h */
 }
-header.hero h1{margin:0;font-size:1.5rem;letter-spacing:-.01em;}
-header.hero .sub{margin-top:6px;font-size:.86rem;opacity:.9;}
-header.hero .gold{color:#f0cf85;font-weight:700;}
+header.hero h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+header.hero .sub {
+  margin-top: 6px;
+  font-size: 0.86rem;
+  opacity: 0.9;
+}
+header.hero .gold {
+  color: #f0cf85;
+  font-weight: 700;
+}
 
 /* ---------- Expandable action checklist (inside the booster table) ---------- */
-.wkrow{cursor:pointer;}
+.wkrow {
+  cursor: pointer;
+}
 /* slightly dim collapsed weeks; current + expanded weeks stay full opacity */
-.tablecard tbody tr.wkrow:not(.current):not(.open){opacity:.6;}
+.tablecard tbody tr.wkrow:not(.current):not(.open) {
+  opacity: 0.6;
+}
 /* hover: apply at td level so it overrides nth-child striping + the total cell uniformly
    (only on collapsed, non-current rows so it doesn't fight their own backgrounds) */
-.tablecard tbody tr.wkrow:not(.current):not(.open):hover{opacity:1;}
-.tablecard tbody tr.wkrow:not(.current):not(.open):hover > td{background:#f2f0ea !important;}
-.wkrow .caret{display:inline-block;margin-right:3px;color:var(--ink);font-size:.9em;}
+.tablecard tbody tr.wkrow:not(.current):not(.open):hover {
+  opacity: 1;
+}
+.tablecard tbody tr.wkrow:not(.current):not(.open):hover > td {
+  background: #f2f0ea !important;
+}
+.wkrow .caret {
+  display: inline-block;
+  margin-right: 3px;
+  color: var(--ink);
+  font-size: 0.9em;
+}
 /* expanded week: distinct tint on both the week row and its plan row, so the
    open week clearly stands apart from collapsed rows (overrides nth-child striping) */
-.tablecard tbody tr.wkrow.open:not(.current) > td{border-bottom:0;background:#f2f0ea;}
-.tablecard tbody tr.wkrow.open.current > td{border-bottom:0;}
-.tablecard tbody tr.planrow > td{padding:2px 12px 12px !important;background:#f2f0ea;border-top:0 !important;}
-.tablecard tbody tr.planrow.current > td{background:#fffbe6;}
+.tablecard tbody tr.wkrow.open:not(.current) > td {
+  border-bottom: 0;
+  background: #f2f0ea;
+}
+.tablecard tbody tr.wkrow.open.current > td {
+  border-bottom: 0;
+}
+.tablecard tbody tr.planrow > td {
+  padding: 2px 12px 12px !important;
+  background: #f2f0ea;
+  border-top: 0 !important;
+}
+.tablecard tbody tr.planrow.current > td {
+  background: #fffbe6;
+}
 /* expanded week row: drop the 1px grey border-top so the blue inset outline is the
    only top edge (no grey sliver above the box) */
-.tablecard tbody tr.wkrow.open:not(.current) > td{border-top:0;}
-/* blue border wrapping the expanded (non-current) week + its plan row as one unit */
-.tablecard tbody tr.wkrow.open:not(.current) > td{box-shadow:inset 0 3px 0 var(--zus-blue);}
-.tablecard tbody tr.wkrow.open:not(.current) > td:first-child{box-shadow:inset 3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
-.tablecard tbody tr.wkrow.open:not(.current) > td:last-child{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
-.tablecard tbody tr.planrow:not(.current) > td{box-shadow:inset 3px 0 0 var(--zus-blue), inset -3px 0 0 var(--zus-blue), inset 0 -3px 0 var(--zus-blue);}
-.wp-strip{display:flex;flex-direction:column;gap:5px;}
-.wp-actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;}
-.wp-act{
-  display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
-  border:1px solid var(--line);border-radius:6px;background:#fff;
-  padding:4px 8px;font-size:.7rem;line-height:1.3;
+.tablecard tbody tr.wkrow.open:not(.current) > td {
+  border-top: 0;
 }
-.wp-clabel{font-weight:700;}
-.wp-ccue{color:var(--muted);font-weight:500;font-size:.66rem;}
+/* blue border wrapping the expanded (non-current) week + its plan row as one unit */
+.tablecard tbody tr.wkrow.open:not(.current) > td {
+  box-shadow: inset 0 3px 0 var(--zus-blue);
+}
+.tablecard tbody tr.wkrow.open:not(.current) > td:first-child {
+  box-shadow:
+    inset 3px 0 0 var(--zus-blue),
+    inset 0 3px 0 var(--zus-blue);
+}
+.tablecard tbody tr.wkrow.open:not(.current) > td:last-child {
+  box-shadow:
+    inset -3px 0 0 var(--zus-blue),
+    inset 0 3px 0 var(--zus-blue);
+}
+.tablecard tbody tr.planrow:not(.current) > td {
+  box-shadow:
+    inset 3px 0 0 var(--zus-blue),
+    inset -3px 0 0 var(--zus-blue),
+    inset 0 -3px 0 var(--zus-blue);
+}
+.wp-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.wp-actions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.wp-act {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+.wp-clabel {
+  font-weight: 700;
+}
+.wp-ccue {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.66rem;
+}
 /* every card gets a colour-coded left bezel matching its category */
-.wp-act.report{background:var(--zus-blue-light);border:1px solid #c3cbef;border-left:3px solid var(--zus-blue);}
-.wp-act.report .wp-clabel{color:var(--zus-blue);}
-.wp-act.workout,.wp-act.steps{background:#e7f5ed;border:1px solid #bfe3cd;border-left:3px solid var(--green);}
-.wp-act.workout .wp-clabel,.wp-act.steps .wp-clabel{color:var(--green);}
-.wp-act.booster{background:var(--boost);border:1px solid var(--boost-line);border-left:3px solid var(--zus-gold);}
-.wp-act.booster .wp-clabel{color:#8a6420;}
+.wp-act.report {
+  background: var(--zus-blue-light);
+  border: 1px solid #c3cbef;
+  border-left: 3px solid var(--zus-blue);
+}
+.wp-act.report .wp-clabel {
+  color: var(--zus-blue);
+}
+.wp-act.workout,
+.wp-act.steps {
+  background: #e7f5ed;
+  border: 1px solid #bfe3cd;
+  border-left: 3px solid var(--green);
+}
+.wp-act.workout .wp-clabel,
+.wp-act.steps .wp-clabel {
+  color: var(--green);
+}
+.wp-act.booster {
+  background: var(--boost);
+  border: 1px solid var(--boost-line);
+  border-left: 3px solid var(--zus-gold);
+}
+.wp-act.booster .wp-clabel {
+  color: #8a6420;
+}
 /* combo = booster that also counts as a workout: gold fill, green bezel for the workout double-duty */
-.wp-act.combo{background:var(--boost);border:1px solid var(--boost-line);border-left:3px solid var(--green);}
-.wp-act.combo .wp-clabel{color:#8a6420;}
+.wp-act.combo {
+  background: var(--boost);
+  border: 1px solid var(--boost-line);
+  border-left: 3px solid var(--green);
+}
+.wp-act.combo .wp-clabel {
+  color: #8a6420;
+}
 
 /* ---------- Weekly recurring summary ---------- */
-.recurring{
-  background:#fff;border:1px solid var(--line);border-radius:14px;
-  padding:14px 16px;margin-bottom:14px;
+.recurring {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
 }
-.recurring h2{margin:0 0 10px;font-size:.95rem;color:var(--green);display:flex;align-items:center;gap:8px;}
-.maxbadge{margin-left:auto;font-size:.7rem;font-weight:700;color:var(--green);background:#e7f5ed;border:1px solid #bfe3cd;border-radius:20px;padding:2px 9px;white-space:nowrap;}
-.maxbadge.bonus-max{color:#8a6420;background:var(--boost);border-color:var(--boost-line);}
-.pill-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:stretch;
+.recurring h2 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.maxbadge {
+  margin-left: auto;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--green);
+  background: #e7f5ed;
+  border: 1px solid #bfe3cd;
+  border-radius: 20px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+.maxbadge.bonus-max {
+  color: #8a6420;
+  background: var(--boost);
+  border-color: var(--boost-line);
+}
+.pill-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  align-items: stretch;
   /* 3 shared rows: title / description / score table — cards align row-by-row */
-  grid-template-rows:auto auto auto;}
-.pill{
-  border:1px solid var(--line);border-radius:10px;
-  padding:7px 9px;background:#fafbff;
-  min-width:0;
-  display:grid;grid-row:span 3;grid-template-rows:subgrid;
+  grid-template-rows: auto auto auto;
 }
-.pill .t{font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:5px;justify-content:space-between;}
-.pill .t .cap{font-size:.68rem;color:var(--green);font-weight:700;background:#e7f5ed;border:1px solid #bfe3cd;border-radius:20px;padding:1px 8px;white-space:nowrap;}
-.pill .t .cap.bonus-cap{color:#8a6420;background:var(--boost);border-color:var(--boost-line);}
-.bonus{background:linear-gradient(180deg,#fffaf0,#fff);border-color:var(--boost-line);}
-.bonus h2{color:#8a6420;}
-.pill .d{font-size:.72rem;color:var(--muted);margin-top:3px;}
+.pill {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 7px 9px;
+  background: #fafbff;
+  min-width: 0;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+}
+.pill .t {
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: space-between;
+}
+.pill .t .cap {
+  font-size: 0.68rem;
+  color: var(--green);
+  font-weight: 700;
+  background: #e7f5ed;
+  border: 1px solid #bfe3cd;
+  border-radius: 20px;
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+.pill .t .cap.bonus-cap {
+  color: #8a6420;
+  background: var(--boost);
+  border-color: var(--boost-line);
+}
+.bonus {
+  background: linear-gradient(180deg, #fffaf0, #fff);
+  border-color: var(--boost-line);
+}
+.bonus h2 {
+  color: #8a6420;
+}
+.pill .d {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
 /* tidy mini score table inside each pill — pushed to the card bottom so the
    tables bottom-align across all three cards regardless of description length */
-.ptab{width:100%;border-collapse:separate;border-spacing:0 2px;margin-top:6px;font-size:.71rem;align-self:start;}
-.ptab td{padding:2px 4px;}
-.ptab td:first-child{color:var(--muted);}
-.ptab td:last-child{text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;}
+.ptab {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 2px;
+  margin-top: 6px;
+  font-size: 0.71rem;
+  align-self: start;
+}
+.ptab td {
+  padding: 2px 4px;
+}
+.ptab td:first-child {
+  color: var(--muted);
+}
+.ptab td:last-child {
+  text-align: right;
+  font-weight: 700;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
 /* highlight the top-tier (target) row */
-.ptab tr.target td{background:#e7f5ed;}
-.ptab tr.target td:first-child{color:var(--green);font-weight:700;border-radius:4px 0 0 4px;}
-.ptab tr.target td:last-child{border-radius:0 4px 4px 0;}
-.scope{font-size:.68rem;font-weight:700;color:#b3541e;margin:-4px 0 10px;}
-.everyweek-scope{color:var(--muted);}
+.ptab tr.target td {
+  background: #e7f5ed;
+}
+.ptab tr.target td:first-child {
+  color: var(--green);
+  font-weight: 700;
+  border-radius: 4px 0 0 4px;
+}
+.ptab tr.target td:last-child {
+  border-radius: 0 4px 4px 0;
+}
+.scope {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #b3541e;
+  margin: -4px 0 10px;
+}
+.everyweek-scope {
+  color: var(--muted);
+}
 
 /* ---------- Table ---------- */
 /* NOTE: no overflow:hidden here — it would break the sticky header.
    Corners are rounded via the header cells + last row instead. */
 /* square corners — no border-radius here (also keeps the sticky header simple) */
-.tablecard{
-  background:#fff;border:1px solid var(--line);
+.tablecard {
+  background: #fff;
+  border: 1px solid var(--line);
 }
-.tablecard table{border-collapse:collapse;width:100%;font-size:.8rem;min-width:560px;}
-.tablecard thead th{
-  background:var(--zus-blue);color:#fff;
-  padding:9px 10px;text-align:left;font-weight:600;
-  font-size:.74rem;letter-spacing:.02em;text-transform:uppercase;
-  position:sticky;top:var(--hero-h, 0px);z-index:2;
+.tablecard table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8rem;
+  min-width: 560px;
 }
-.tablecard tbody td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;}
-.tablecard tbody tr:nth-child(even){background:#fafbff;}
-th.th-booster{width:100%;} /* greedy: absorbs all slack so other columns fit content */
-th.th-wk{width:1%;white-space:nowrap;}
-td.wk{font-weight:800;color:var(--zus-blue);white-space:nowrap;width:1%;padding-right:6px;}
-.dates{display:block;font-weight:500;color:var(--muted);font-size:.7rem;margin-top:2px;}
-.booster{font-weight:700;color:var(--zus-blue);}
-.tag{
-  display:inline-block;background:var(--boost);border:1px solid var(--boost-line);
-  color:#8a6420;border-radius:6px;padding:1px 6px;font-size:.7rem;
-  font-weight:600;margin-top:3px;
+.tablecard thead th {
+  background: var(--zus-blue);
+  color: #fff;
+  padding: 9px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  position: sticky;
+  top: var(--hero-h, 0px);
+  z-index: 2;
 }
-.post{font-size:.72rem;color:var(--muted);margin-top:2px;}
-.bonusline{display:inline-block;font-size:.72rem;font-weight:700;color:#8a6420;margin-top:2px;}
-.extraline{display:inline-block;font-size:.7rem;font-weight:600;color:#8a6420;opacity:.85;margin-top:1px;}
+.tablecard tbody td {
+  padding: 9px 10px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+.tablecard tbody tr:nth-child(even) {
+  background: #fafbff;
+}
+th.th-booster {
+  width: 100%;
+} /* greedy: absorbs all slack so other columns fit content */
+th.th-wk {
+  width: 1%;
+  white-space: nowrap;
+}
+td.wk {
+  font-weight: 800;
+  color: var(--zus-blue);
+  white-space: nowrap;
+  width: 1%;
+  padding-right: 6px;
+}
+.dates {
+  display: block;
+  font-weight: 500;
+  color: var(--muted);
+  font-size: 0.7rem;
+  margin-top: 2px;
+}
+.booster {
+  font-weight: 700;
+  color: var(--zus-blue);
+}
+.tag {
+  display: inline-block;
+  background: var(--boost);
+  border: 1px solid var(--boost-line);
+  color: #8a6420;
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 3px;
+}
+.post {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.bonusline {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #8a6420;
+  margin-top: 2px;
+}
+.extraline {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #8a6420;
+  opacity: 0.85;
+  margin-top: 1px;
+}
 /* Wk target — compact stack: total, baseline, + booster (with its 30/40) */
-td.wkmax{white-space:nowrap;text-align:right;color:var(--zus-blue);font-variant-numeric:tabular-nums;width:1%;}
-.wkmax-total{display:block;font-weight:800;font-size:.78rem;}
-.wkmax-base{display:block;font-size:.68rem;color:var(--muted);margin-top:2px;font-weight:400;}
-.wkmax-base b{font-weight:400;}
-.wkmax-base .p-base{color:var(--green);}   /* 200 baseline = green, like every-week section */
-.wkmax-base .p-boost{color:#8a6420;margin-left:.3em;} /* 30 + 10 = the booster contribution, both gold */
-.wkmax-base .p-bonus{color:#8a6420;margin-left:.3em;}
-td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;color:var(--zus-blue);background:var(--zus-blue-light)!important;font-variant-numeric:tabular-nums;}
+td.wkmax {
+  white-space: nowrap;
+  text-align: right;
+  color: var(--zus-blue);
+  font-variant-numeric: tabular-nums;
+  width: 1%;
+}
+.wkmax-total {
+  display: block;
+  font-weight: 800;
+  font-size: 0.78rem;
+}
+.wkmax-base {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 2px;
+  font-weight: 400;
+}
+.wkmax-base b {
+  font-weight: 400;
+}
+.wkmax-base .p-base {
+  color: var(--green);
+} /* 200 baseline = green, like every-week section */
+.wkmax-base .p-boost {
+  color: #8a6420;
+  margin-left: 0.3em;
+} /* 30 + 10 = the booster contribution, both gold */
+.wkmax-base .p-bonus {
+  color: #8a6420;
+  margin-left: 0.3em;
+}
+td.total {
+  white-space: nowrap;
+  font-weight: 800;
+  font-size: 0.78rem;
+  text-align: right;
+  color: var(--zus-blue);
+  background: var(--zus-blue-light) !important;
+  font-variant-numeric: tabular-nums;
+}
 
 /* phase divider: gold top-border on the first row of each new booster phase
    (skip the very first row — its border would read as a gold underline on the header) */
-.tablecard tbody tr.phase-start:not(:first-child) td{border-top:2px solid var(--zus-gold);}
+.tablecard tbody tr.phase-start:not(:first-child) td {
+  border-top: 2px solid var(--zus-gold);
+}
 /* when an expanded week is also a phase start, the blue outline replaces the gold
    divider on that row (avoids two stacked lines at the top edge) */
-.tablecard tbody tr.phase-start.open td{border-top-color:transparent;}
+.tablecard tbody tr.phase-start.open td {
+  border-top-color: transparent;
+}
 /* if a phase-start row directly follows an expanded week's plan row, hide its gold
    top border too — the blue outline's bottom edge already marks that boundary */
-.tablecard tbody tr.planrow + tr.phase-start td{border-top-color:transparent;}
+.tablecard tbody tr.planrow + tr.phase-start td {
+  border-top-color: transparent;
+}
 
 /* current week: identified by a distinct yellow background (no outline when collapsed) */
-.tablecard tbody tr.current td{background:#fff2c2;}
-.tablecard tbody tr.current td.wk{color:var(--ink);}
-.tablecard tbody tr.planrow.current td{background:#fff2c2;}
+.tablecard tbody tr.current td {
+  background: #fff2c2;
+}
+.tablecard tbody tr.current td.wk {
+  color: var(--ink);
+}
+.tablecard tbody tr.planrow.current td {
+  background: #fff2c2;
+}
 /* when the current week is expanded, give it the same blue outline as other weeks,
    spanning the week row + plan row as one box */
-.tablecard tbody tr.current.open > td{border-top:0;box-shadow:inset 0 3px 0 var(--zus-blue);}
-.tablecard tbody tr.current.open > td:first-child{box-shadow:inset 3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
-.tablecard tbody tr.current.open > td:last-child{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
-.tablecard tbody tr.planrow.current > td{box-shadow:inset 3px 0 0 var(--zus-blue), inset -3px 0 0 var(--zus-blue), inset 0 -3px 0 var(--zus-blue);}
+.tablecard tbody tr.current.open > td {
+  border-top: 0;
+  box-shadow: inset 0 3px 0 var(--zus-blue);
+}
+.tablecard tbody tr.current.open > td:first-child {
+  box-shadow:
+    inset 3px 0 0 var(--zus-blue),
+    inset 0 3px 0 var(--zus-blue);
+}
+.tablecard tbody tr.current.open > td:last-child {
+  box-shadow:
+    inset -3px 0 0 var(--zus-blue),
+    inset 0 3px 0 var(--zus-blue);
+}
+.tablecard tbody tr.planrow.current > td {
+  box-shadow:
+    inset 3px 0 0 var(--zus-blue),
+    inset -3px 0 0 var(--zus-blue),
+    inset 0 -3px 0 var(--zus-blue);
+}
 
 /* ---------- Legend / footer ---------- */
-.legend{
-  margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:14px;
-  padding:20px 22px;font-size:.84rem;line-height:1.65;color:var(--muted);
+.legend {
+  margin-top: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: var(--muted);
 }
-.legend h2{margin:0 0 14px;font-size:.95rem;color:var(--zus-blue);}
-.legend ul{margin:0;padding-left:20px;}
-.legend li{margin-bottom:12px;}
-.legend li:last-child{margin-bottom:0;}
-.legend b{color:var(--ink);}
-.req{color:var(--red);font-weight:700;}
-.opt{color:var(--zus-gold);font-weight:700;}
+.legend h2 {
+  margin: 0 0 14px;
+  font-size: 0.95rem;
+  color: var(--zus-blue);
+}
+.legend ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.legend li {
+  margin-bottom: 12px;
+}
+.legend li:last-child {
+  margin-bottom: 0;
+}
+.legend b {
+  color: var(--ink);
+}
+.req {
+  color: var(--red);
+  font-weight: 700;
+}
+.opt {
+  color: var(--zus-gold);
+  font-weight: 700;
+}
 
-@media (max-width:520px){
-  header.hero h1{font-size:1.25rem;}
-  body{padding:14px 8px 40px;}
-  .pill-row{grid-template-columns:1fr;}
+@media (max-width: 520px) {
+  header.hero h1 {
+    font-size: 1.25rem;
+  }
+  body {
+    padding: 14px 8px 40px;
+  }
+  .pill-row {
+    grid-template-columns: 1fr;
+  }
 
   /* table fits the viewport — drop the min-width and the least-essential column */
-  .tablecard table{min-width:0;font-size:.74rem;}
-  .tablecard thead th{font-size:.6rem;letter-spacing:0;padding:6px 5px;} /* smaller header so cols stay narrow */
-  .tablecard tbody td{padding:6px 6px;}
+  .tablecard table {
+    min-width: 0;
+    font-size: 0.74rem;
+  }
+  .tablecard thead th {
+    font-size: 0.6rem;
+    letter-spacing: 0;
+    padding: 6px 5px;
+  } /* smaller header so cols stay narrow */
+  .tablecard tbody td {
+    padding: 6px 6px;
+  }
   .tablecard th:last-child,        /* Acc. total header */
-  .tablecard td.total{display:none;} /* hide cumulative total on mobile */
+  .tablecard td.total {
+    display: none;
+  } /* hide cumulative total on mobile */
   /* Acc.total hidden, so the expanded week's right border must move to Wk target */
-  .tablecard tbody tr.wkrow.open:not(.current) td.wkmax{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
-  .tablecard tbody tr.current.open td.wkmax{box-shadow:inset -3px 0 0 var(--zus-blue), inset 0 3px 0 var(--zus-blue);}
-  .wkmax-base{font-size:.7rem;}    /* keep the 200+30+10 breakdown, just smaller */
-  .wkmax-base b{display:block;margin-left:0;} /* stack 200 / +30 / +10 vertically */
-  .tag{white-space:normal;}
+  .tablecard tbody tr.wkrow.open:not(.current) td.wkmax {
+    box-shadow:
+      inset -3px 0 0 var(--zus-blue),
+      inset 0 3px 0 var(--zus-blue);
+  }
+  .tablecard tbody tr.current.open td.wkmax {
+    box-shadow:
+      inset -3px 0 0 var(--zus-blue),
+      inset 0 3px 0 var(--zus-blue);
+  }
+  .wkmax-base {
+    font-size: 0.7rem;
+  } /* keep the 200+30+10 breakdown, just smaller */
+  .wkmax-base b {
+    display: block;
+    margin-left: 0;
+  } /* stack 200 / +30 / +10 vertically */
+  .tag {
+    white-space: normal;
+  }
   /* week column: allow dates to wrap, but give it enough width to avoid
      breaking into too many lines on the longer date ranges */
-  td.wk{white-space:normal;min-width:58px;}
-  .dates{white-space:normal;word-spacing:-1px;}
+  td.wk {
+    white-space: normal;
+    min-width: 58px;
+  }
+  .dates {
+    white-space: normal;
+    word-spacing: -1px;
+  }
   /* tighter corners on small screens */
-  .recurring,.legend,header.hero{border-radius:8px;}
+  .recurring,
+  .legend,
+  header.hero {
+    border-radius: 8px;
+  }
   /* legend: match the other section cards' padding/spacing on mobile */
-  .legend{padding:14px 16px;line-height:1.5;}
-  .legend h2{margin:0 0 10px;}
-  .legend li{margin-bottom:9px;}
+  .legend {
+    padding: 14px 16px;
+    line-height: 1.5;
+  }
+  .legend h2 {
+    margin: 0 0 10px;
+  }
+  .legend li {
+    margin-bottom: 9px;
+  }
 }
-@media print{
-  body{background:#fff;padding:0;}
-  header.hero{box-shadow:none;}
-  .scroll{overflow:visible;}
-  table{min-width:0;font-size:9pt;}
+@media print {
+  body {
+    background: #fff;
+    padding: 0;
+  }
+  header.hero {
+    box-shadow: none;
+  }
+  .scroll {
+    overflow: visible;
+  }
+  table {
+    min-width: 0;
+    font-size: 9pt;
+  }
 }
