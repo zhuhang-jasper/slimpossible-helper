@@ -29,6 +29,7 @@
     "eslint/no-underscore-dangle": "off",
     "eslint/no-unused-vars": "warn",
     "eslint/no-useless-catch": "warn",
+    "eslint/prefer-named-capture-group": "off",
     "eslint/sort-imports": "off",
     "eslint/sort-keys": "off",
     "import/exports-last": "off",
