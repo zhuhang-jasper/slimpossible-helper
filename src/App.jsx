@@ -113,7 +113,7 @@ export default function App() {
                     <table>
                         <thead>
                             <tr>
-                                <th className="th-wk">Weekk</th>
+                                <th className="th-wk">Week</th>
                                 <th className="th-booster">
                                     Bi-Weekly Booster
                                 </th>
@@ -164,10 +164,8 @@ export default function App() {
                                         </span>
                                         <span className="wkmax-base">
                                             <b className="p-base">200</b>
-                                            {" + "}
-                                            <b className="p-boost">30</b>
-                                            {" + "}
-                                            <b className="p-bonus">10</b>
+                                            <b className="p-boost">+30</b>
+                                            <b className="p-bonus">+10</b>
                                         </span>
                                     </td>
                                     <td className="total">{fmt(b.total)}</td>

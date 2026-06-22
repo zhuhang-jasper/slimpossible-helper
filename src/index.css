@@ -40,20 +40,21 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
   background:#fff;border:1px solid var(--line);border-radius:14px;
   padding:14px 16px;margin-bottom:14px;
 }
-.recurring h2{margin:0 0 10px;font-size:.95rem;color:var(--zus-blue);}
-.maxbadge{font-size:.7rem;font-weight:700;color:var(--green);background:#e7f5ed;border:1px solid #bfe3cd;border-radius:20px;padding:2px 9px;vertical-align:middle;white-space:nowrap;}
-.pill-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.recurring h2{margin:0 0 10px;font-size:.95rem;color:var(--zus-blue);display:flex;align-items:center;gap:8px;}
+.maxbadge{margin-left:auto;font-size:.7rem;font-weight:700;color:var(--green);background:#e7f5ed;border:1px solid #bfe3cd;border-radius:20px;padding:2px 9px;white-space:nowrap;}
+.pill-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:stretch;}
 .pill{
   border:1px solid var(--line);border-radius:10px;
   padding:7px 9px;background:#fafbff;
   min-width:0;
+  display:flex;flex-direction:column;
 }
-.pill .t{font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:5px;justify-content:space-between;}
+.pill .t{font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:5px;justify-content:space-between;min-height:2.4em;}
 .pill .t .cap{font-size:.68rem;color:var(--green);font-weight:700;background:#e7f5ed;border:1px solid #bfe3cd;border-radius:20px;padding:1px 8px;white-space:nowrap;}
 .pill .t .cap.bonus-cap{color:#8a6420;background:var(--boost);border-color:var(--boost-line);}
 .bonus{background:linear-gradient(180deg,#fffaf0,#fff);border-color:var(--boost-line);}
 .bonus h2{color:#8a6420;}
-.pill .d{font-size:.72rem;color:var(--muted);margin-top:3px;}
+.pill .d{font-size:.72rem;color:var(--muted);margin-top:3px;min-height:3.2em;}
 /* tidy mini score table inside each pill */
 .ptab{width:100%;border-collapse:separate;border-spacing:0 2px;margin-top:6px;font-size:.71rem;}
 .ptab td{padding:2px 4px;}
@@ -84,7 +85,7 @@ th.th-booster{width:100%;} /* greedy: absorbs all slack so other columns fit con
 th.th-wk{width:1%;white-space:nowrap;}
 td.wk{font-weight:800;color:var(--zus-blue);white-space:nowrap;width:1%;padding-right:6px;}
 .dates{display:block;font-weight:500;color:var(--muted);font-size:.7rem;margin-top:2px;}
-.booster{font-weight:700;}
+.booster{font-weight:700;color:var(--zus-blue);}
 .tag{
   display:inline-block;background:var(--boost);border:1px solid var(--boost-line);
   color:#8a6420;border-radius:6px;padding:1px 6px;font-size:.7rem;
@@ -95,12 +96,13 @@ td.wk{font-weight:800;color:var(--zus-blue);white-space:nowrap;width:1%;padding-
 .extraline{display:inline-block;font-size:.7rem;font-weight:600;color:#8a6420;opacity:.85;margin-top:1px;}
 /* Wk target — compact stack: total, baseline, + booster (with its 30/40) */
 td.wkmax{white-space:nowrap;text-align:right;color:var(--zus-blue);font-variant-numeric:tabular-nums;width:1%;}
-.wkmax-total{display:block;font-weight:800;font-size:1rem;}
-.wkmax-base{display:block;font-size:.78rem;color:var(--muted);margin-top:3px;font-weight:600;}
+.wkmax-total{display:block;font-weight:800;font-size:.78rem;}
+.wkmax-base{display:block;font-size:.68rem;color:var(--muted);margin-top:2px;font-weight:400;}
+.wkmax-base b{font-weight:400;}
 .wkmax-base .p-base{color:var(--green);}   /* 200 baseline = green, like every-week section */
-.wkmax-base .p-boost{color:var(--zus-blue);} /* 30 booster (Lark tracker) = brand blue */
-.wkmax-base .p-bonus{color:#8a6420;}        /* 10 ZUS Moments bonus = gold, like bonus line */
-td.total{white-space:nowrap;font-weight:800;text-align:right;color:var(--zus-blue);background:var(--zus-blue-light)!important;font-variant-numeric:tabular-nums;}
+.wkmax-base .p-boost{color:var(--zus-blue);margin-left:.3em;} /* 30 booster (Lark tracker) = brand blue */
+.wkmax-base .p-bonus{color:#8a6420;margin-left:.3em;}        /* 10 ZUS Moments bonus = gold, like bonus line */
+td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;color:var(--zus-blue);background:var(--zus-blue-light)!important;font-variant-numeric:tabular-nums;}
 
 /* phase divider: gold top-border on the first row of each new booster phase
    (skip the very first row — its border would read as a gold underline on the header) */
@@ -122,11 +124,12 @@ td.total{white-space:nowrap;font-weight:800;text-align:right;color:var(--zus-blu
 /* ---------- Legend / footer ---------- */
 .legend{
   margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:14px;
-  padding:14px 16px;font-size:.78rem;color:var(--muted);
+  padding:20px 22px;font-size:.84rem;line-height:1.65;color:var(--muted);
 }
-.legend h2{margin:0 0 8px;font-size:.9rem;color:var(--zus-blue);}
-.legend ul{margin:6px 0 0;padding-left:18px;}
-.legend li{margin-bottom:4px;}
+.legend h2{margin:0 0 14px;font-size:.95rem;color:var(--zus-blue);}
+.legend ul{margin:0;padding-left:20px;}
+.legend li{margin-bottom:12px;}
+.legend li:last-child{margin-bottom:0;}
 .legend b{color:var(--ink);}
 .req{color:var(--red);font-weight:700;}
 .opt{color:var(--zus-gold);font-weight:700;}
@@ -135,6 +138,21 @@ td.total{white-space:nowrap;font-weight:800;text-align:right;color:var(--zus-blu
   header.hero h1{font-size:1.25rem;}
   body{padding:14px 8px 40px;}
   .pill-row{grid-template-columns:1fr;}
+
+  /* table fits the viewport — drop the min-width and the least-essential column */
+  .tablecard table{min-width:0;font-size:.74rem;}
+  .tablecard thead th,
+  .tablecard tbody td{padding:6px 6px;}
+  .tablecard th:last-child,        /* Acc. total header */
+  .tablecard td.total{display:none;} /* hide cumulative total on mobile */
+  .wkmax-base{font-size:.7rem;}    /* keep the 200+30+10 breakdown, just smaller */
+  .wkmax-base b{display:block;margin-left:0;} /* stack 200 / +30 / +10 vertically */
+  .tag{white-space:normal;}
+  /* let the week column shrink: allow the date to wrap onto multiple lines */
+  td.wk{white-space:normal;}
+  .dates{white-space:normal;word-spacing:-1px;}
+  /* tighter corners on small screens */
+  .tablecard,.recurring,.legend,header.hero{border-radius:8px;}
 }
 @media print{
   body{background:#fff;padding:0;}
