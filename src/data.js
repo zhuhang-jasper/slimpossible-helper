@@ -96,12 +96,20 @@ export const BOOSTER_META = {
 // Returns [{ kind, label, cue }]; kind drives styling (report / workout / booster / combo).
 export function buildDayPlan(booster) {
   const m = BOOSTER_META[booster.phase] || {};
+  // W1 is the first week — there's nothing from a prior week to report, so it's a weigh-in only.
+  const isFirstWeek = booster.wk === "W1";
   const actions = [
-    {
-      kind: "report",
-      label: "Mon: Weigh-in + report",
-      cue: "scale (feet + display visible) · log steps, workouts, booster",
-    },
+    isFirstWeek
+      ? {
+          kind: "report",
+          label: "Mon: Weigh-in",
+          cue: "scale (feet + display visible)",
+        }
+      : {
+          kind: "report",
+          label: "Mon: Weigh-in + report",
+          cue: "scale (feet + display visible) · log steps, workouts, booster",
+        },
   ];
   actions.push({
     kind: "steps",

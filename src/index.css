@@ -471,7 +471,7 @@ td.total {
   font-size: 0.78rem;
   text-align: right;
   color: var(--zus-blue);
-  background: var(--zus-blue-light) !important;
+  font-style: italic;
   font-variant-numeric: tabular-nums;
 }
 
