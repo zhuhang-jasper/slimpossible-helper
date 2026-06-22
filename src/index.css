@@ -159,6 +159,10 @@ td.total{white-space:nowrap;font-weight:800;font-size:.78rem;text-align:right;co
   .dates{white-space:normal;word-spacing:-1px;}
   /* tighter corners on small screens */
   .tablecard,.recurring,.legend,header.hero{border-radius:8px;}
+  /* legend: match the other section cards' padding/spacing on mobile */
+  .legend{padding:14px 16px;line-height:1.5;}
+  .legend h2{margin:0 0 10px;}
+  .legend li{margin-bottom:9px;}
 }
 @media print{
   body{background:#fff;padding:0;}
