@@ -35,11 +35,16 @@ export default function App() {
     const scrollRowIntoView = (i) => {
         const row = rowRefs.current[i];
         if (!row) return;
-        // account for the sticky table header so the row isn't hidden under it
+        // account for the sticky hero + sticky table header so the row isn't hidden under them
+        const heroH = document.querySelector("header.hero")?.offsetHeight || 0;
         const headerH =
             document.querySelector(".tablecard thead")?.offsetHeight || 0;
         const top =
-            row.getBoundingClientRect().top + window.scrollY - headerH;
+            row.getBoundingClientRect().top +
+            window.scrollY -
+            heroH -
+            headerH -
+            16; // 8px top gap + 8px gap between the two sticky bars
         window.scrollTo({ top, behavior: "smooth" });
     };
     const toggleWeek = (i) =>
@@ -50,9 +55,22 @@ export default function App() {
             return next;
         });
 
-    // Auto-scroll the current week into view on load/refresh.
+    // Keep --hero-h in sync with the sticky hero's height so the table header
+    // can stack right below it. Also auto-scroll the current week into view on load.
     useEffect(() => {
+        const hero = document.querySelector("header.hero");
+        const setHeroH = () => {
+            if (hero)
+                document.documentElement.style.setProperty(
+                    "--hero-h",
+                    // hero height + its 8px top gap + an 8px gap between the two sticky bars
+                    `${hero.offsetHeight + 16}px`,
+                );
+        };
+        setHeroH();
+        window.addEventListener("resize", setHeroH);
         if (currentWeek >= 0) scrollRowIntoView(currentWeek);
+        return () => window.removeEventListener("resize", setHeroH);
     }, []);
 
     return (

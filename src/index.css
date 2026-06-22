@@ -24,6 +24,13 @@ body{
   line-height:1.45;
   padding:24px 16px 56px;
 }
+/* opaque backdrop behind the sticky hero + table-header zone, so content
+   scrolling underneath isn't visible through the gaps. Sits below the bars
+   (hero z:10, header z:2) but above table content. */
+body::before{
+  content:"";position:fixed;top:0;left:0;right:0;
+  height:var(--hero-h, 0px);background:var(--bg);z-index:1;
+}
 .wrap{max-width:840px;margin:0 auto;}
 
 /* ---------- Header ---------- */
@@ -34,6 +41,7 @@ header.hero{
   padding:22px 24px;
   margin-bottom:14px;
   box-shadow:0 6px 20px rgba(29,43,138,.18);
+  position:sticky;top:8px;z-index:10; /* pinned with an 8px gap; table header stacks below via --hero-h */
 }
 header.hero h1{margin:0;font-size:1.5rem;letter-spacing:-.01em;}
 header.hero .sub{margin-top:6px;font-size:.86rem;opacity:.9;}
@@ -130,7 +138,7 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
   background:var(--zus-blue);color:#fff;
   padding:9px 10px;text-align:left;font-weight:600;
   font-size:.74rem;letter-spacing:.02em;text-transform:uppercase;
-  position:sticky;top:0;z-index:2;
+  position:sticky;top:var(--hero-h, 0px);z-index:2;
 }
 .tablecard tbody td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;}
 .tablecard tbody tr:nth-child(even){background:#fafbff;}

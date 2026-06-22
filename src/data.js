@@ -106,7 +106,7 @@ export function buildDayPlan(booster) {
     actions.push({
         kind: "steps",
         label: "Keep walking daily",
-        cue: "aim ~6k+/day",
+        cue: "~6k+/day → 40k+/week",
     });
     if (m.isWorkout) {
         actions.push({
