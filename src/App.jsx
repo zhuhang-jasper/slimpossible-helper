@@ -110,9 +110,7 @@ export default function App() {
             </section>
 
             {/* Booster rotation table */}
-            <div
-                className={`tablecard${currentWeek >= 0 ? " has-current" : ""}`}
-            >
+            <div className="tablecard">
                 <div className="scroll">
                     <table>
                         <thead>

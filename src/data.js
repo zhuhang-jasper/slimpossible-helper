@@ -95,7 +95,7 @@ export const BOOSTERS = [
         phase: "buddy",
         icon: "👣",
         name: "Buddy Steps",
-        desc: "Same as W1. Max 2 buddy-step submissions across W1+W2.",
+        desc: "Same as W1. Max 2 submissions across W1+W2.",
         tags: "#ZUSBuddySteps #ChampionsFuelChampions",
         pts: "30 / 40",
     },
