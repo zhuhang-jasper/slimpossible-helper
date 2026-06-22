@@ -7,6 +7,9 @@ instead of re-parsing the PDF/sheet. Last cross-checked: 2026-06-22 — `data.js
 - Sheet: https://docs.google.com/spreadsheets/d/1EJsSEJlTFtIZPupKgwq07I76MgpqXdylr9xv3JRoivI/edit
 - The point-allocation tables in the PDF are **images** (pages 5–6); they do NOT extract via
   `pdftotext`. Render with `pdftoppm -png -r 200 -f 5 -l 6 <pdf> out` and read the PNGs.
+- **Prettier reformats `src/*` on save** (4-space indent, double quotes, expanded objects). It
+  does NOT drop fields — earlier "reverts" were actually a stale dev server / browser cache on
+  the wrong port. Edits made then formatted are fine; just hard-refresh the right port to verify.
 
 ## Challenge frame
 - 14 weeks, **22 Jun – 27 Sep 2026**. W1 Monday = 22 Jun. Weeks are exactly 7 days.
@@ -61,8 +64,27 @@ All posts also tag **#ChampionsFuelChampions**. Rule: max 1 submission/week, max
 | W13–W14 | 14–27 Sep | 🧠 ZUS Mind Break Mission | #ZUSMindBreakMission | Attend ZUS Mental Health Talk / Wellness session. Submission required after attending. |
 
 Booster bonus tips live in a dedicated `bonus` field on the **first week of each pair**
-(surfaced from the start of the phase, rendered bold). Per the PDF every ZUS Moments bonus
-is **+10 pts (30 → 40)** — the bonus string states this explicitly.
+(surfaced from the start of the phase, rendered bold).
+
+**Quantified point tiers: 30 (Lark Base) and 40 (Lark + ZUS Moments).** The +10 is earned by
+**posting to ZUS Moments with the correct hashtags** — this is the only *numbered* bonus.
+
+Beyond the numbers, the PDF also calls out extra bonus *actions* (not assigned a hard point
+value, but officially encouraged — treat them as real bonuses on the page, without inventing
+a figure):
+- **Pace / Pace-Up:** literally listed as "◦ **Bonus:** Show your ZUS tumbler, cup, canned
+  drink, or merch!"
+- **Hydration:** "Show Your ZUS Spirit — use your ZUS tumbler or wear ZUS merch."
+- **SnapFuel:** post with a **catchy title** (e.g. "Protein Power Bowl!").
+- **Buddy Steps (W1–2):** the 40-pt tier explicitly requires "ZUS Moments **& tag your
+  colleague**" — so tagging is a hard *condition* of the +10 here.
+- FAQ Q14/Q15: ZUS Moments is optional; posting with correct hashtags earns the bonus.
+
+So the booster's **quantified** weekly max is 40; merch/title are encouraged bonus actions
+the PDF doesn't put a number on. In `data.js` these are split into two fields on the
+W1-of-pair row: `bonus` = the +10 ZUS Moments line (bold), `extra` = the short un-numbered
+nicety on its own line ("Show ZUS merch/tumbler", "Add a catchy title", "Add a fun caption",
+"Tag a colleague (required for +10)").
 
 ## Bonus actionables (boosters only — not weigh-in/steps/workouts)
 - 📣 **Post on ZUS Moments**: lifts a booster 30 → 40 pts. Tag #ChampionsFuelChampions + week's booster hashtag.

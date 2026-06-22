@@ -71,7 +71,8 @@ export const CHALLENGE_START = new Date(2026, 5, 22); // 22 Jun 2026 (month is 0
 // Weigh-in is excluded — hitting the >1 kg (40 pt) tier every single week
 // isn't achievable, so it's left out of the ceiling.
 //   100 steps + 100 workouts + 40 booster (Lark + ZUS Moments) = 240/week
-export const WEEK_MAX = 240;
+export const BOOSTER_MAX = 40; // booster portion (Lark + ZUS Moments)
+export const WEEK_MAX = 240; // = 200 baseline (100 steps + 100 workouts) + 40 booster
 export const BIWEEKLY_MAX = WEEK_MAX * 2; // 480 over each 2-week booster phase
 
 // Bi-weekly booster rotation. phase = colour-band grouping.
@@ -83,7 +84,8 @@ export const BOOSTERS = [
         icon: "👣",
         name: "Buddy Steps",
         desc: "Walk/jog with a buddy (incl. family/pets). Photo or video during the activity.",
-        bonus: "Tag colleagues in your ZUS Moments post → +10 pts",
+        bonus: "Post on ZUS Moments → +10 pts",
+        extra: "Tag a colleague (required for +10)",
         tags: "#ZUSBuddySteps #ChampionsFuelChampions",
         pts: "30 / 40",
     },
@@ -104,7 +106,8 @@ export const BOOSTERS = [
         icon: "🥗",
         name: "ZUS SnapFuel",
         desc: "Cook a healthy homemade meal/smoothie. Upload a short time-lapse video.",
-        bonus: "Post with a catchy title on ZUS Moments → +10 pts",
+        bonus: "Post on ZUS Moments → +10 pts",
+        extra: "Add a catchy title",
         tags: "#ZUSSnapFuel #ChampionsFuelChampions",
         pts: "30 / 40",
     },
@@ -125,7 +128,8 @@ export const BOOSTERS = [
         icon: "🏃",
         name: "ZUS Pace Challenge",
         desc: "Complete 2km within 20 min. Show distance + time.",
-        bonus: "Post on ZUS Moments (show ZUS merch) → +10 pts",
+        bonus: "Post on ZUS Moments → +10 pts",
+        extra: "Show ZUS merch/tumbler",
         tags: "#ZUSPaceChallenge #ChampionsFuelChampions",
         pts: "30 / 40",
     },
@@ -146,7 +150,8 @@ export const BOOSTERS = [
         icon: "💧",
         name: "Hydration Hustle",
         desc: "Drink ≥2L water daily. Film a 15–30s clip: take a sip + share 1 health fact.",
-        bonus: "Post on ZUS Moments (feature ZUS tumbler/merch) → +10 pts",
+        bonus: "Post on ZUS Moments → +10 pts",
+        extra: "Show ZUS merch/tumbler",
         tags: "#ZUSHydrationHustle #ChampionsFuelChampions",
         pts: "30 / 40",
     },
@@ -167,7 +172,8 @@ export const BOOSTERS = [
         icon: "⚡",
         name: "Pace Challenge: Level Up",
         desc: "Complete 2km within 15 min. Show distance + time.",
-        bonus: "Post on ZUS Moments (show ZUS merch) → +10 pts",
+        bonus: "Post on ZUS Moments → +10 pts",
+        extra: "Show ZUS merch/tumbler",
         tags: "#ZUSPaceUp #ChampionsFuelChampions",
         pts: "30 / 40",
     },
@@ -209,7 +215,8 @@ export const BOOSTERS = [
         icon: "🧠",
         name: "ZUS Mind Break Mission",
         desc: "Attend a ZUS Mental Health Talk / Wellness session. Log a reflection or photo.",
-        bonus: "Post on ZUS Moments with a fun caption → +10 pts",
+        bonus: "Post on ZUS Moments → +10 pts",
+        extra: "Add a fun caption",
         tags: "#ZUSMindBreakMission #ChampionsFuelChampions",
         pts: "30 / 40",
     },

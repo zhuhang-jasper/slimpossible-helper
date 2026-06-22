@@ -55,10 +55,14 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
 .bonus h2{color:#8a6420;}
 .pill .d{font-size:.72rem;color:var(--muted);margin-top:3px;}
 /* tidy mini score table inside each pill */
-.ptab{width:100%;border-collapse:collapse;margin-top:6px;font-size:.71rem;}
-.ptab td{padding:1px 4px;}
+.ptab{width:100%;border-collapse:separate;border-spacing:0 2px;margin-top:6px;font-size:.71rem;}
+.ptab td{padding:2px 4px;}
 .ptab td:first-child{color:var(--muted);}
 .ptab td:last-child{text-align:right;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;}
+/* highlight the top-tier (target) row */
+.ptab tr.target td{background:#e7f5ed;}
+.ptab tr.target td:first-child{color:var(--green);font-weight:700;border-radius:4px 0 0 4px;}
+.ptab tr.target td:last-child{border-radius:0 4px 4px 0;}
 .scope{font-size:.68rem;font-weight:700;color:#b3541e;}
 
 /* ---------- Table ---------- */
@@ -76,8 +80,10 @@ header.hero .gold{color:#f0cf85;font-weight:700;}
 }
 .tablecard tbody td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;}
 .tablecard tbody tr:nth-child(even){background:#fafbff;}
-td.wk{font-weight:800;color:var(--zus-blue);white-space:nowrap;}
-td.dates{white-space:nowrap;color:var(--muted);font-size:.76rem;}
+th.th-booster{width:100%;} /* greedy: absorbs all slack so other columns fit content */
+th.th-wk{width:1%;white-space:nowrap;}
+td.wk{font-weight:800;color:var(--zus-blue);white-space:nowrap;width:1%;padding-right:6px;}
+.dates{display:block;font-weight:500;color:var(--muted);font-size:.7rem;margin-top:2px;}
 .booster{font-weight:700;}
 .tag{
   display:inline-block;background:var(--boost);border:1px solid var(--boost-line);
@@ -86,8 +92,14 @@ td.dates{white-space:nowrap;color:var(--muted);font-size:.76rem;}
 }
 .post{font-size:.72rem;color:var(--muted);margin-top:2px;}
 .bonusline{display:inline-block;font-size:.72rem;font-weight:700;color:#8a6420;margin-top:2px;}
-td.pts{white-space:nowrap;font-weight:700;color:var(--green);text-align:right;font-variant-numeric:tabular-nums;}
-td.wkmax{white-space:nowrap;font-weight:700;text-align:right;color:var(--zus-blue);font-variant-numeric:tabular-nums;}
+.extraline{display:inline-block;font-size:.7rem;font-weight:600;color:#8a6420;opacity:.85;margin-top:1px;}
+/* Wk target — compact stack: total, baseline, + booster (with its 30/40) */
+td.wkmax{white-space:nowrap;text-align:right;color:var(--zus-blue);font-variant-numeric:tabular-nums;width:1%;}
+.wkmax-total{display:block;font-weight:800;font-size:1rem;}
+.wkmax-base{display:block;font-size:.78rem;color:var(--muted);margin-top:3px;font-weight:600;}
+.wkmax-base .p-base{color:var(--green);}   /* 200 baseline = green, like every-week section */
+.wkmax-base .p-boost{color:var(--zus-blue);} /* 30 booster (Lark tracker) = brand blue */
+.wkmax-base .p-bonus{color:#8a6420;}        /* 10 ZUS Moments bonus = gold, like bonus line */
 td.total{white-space:nowrap;font-weight:800;text-align:right;color:var(--zus-blue);background:var(--zus-blue-light)!important;font-variant-numeric:tabular-nums;}
 
 /* phase divider: gold top-border on the first row of each new booster phase
