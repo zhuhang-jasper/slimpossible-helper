@@ -3,6 +3,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { BookOpen, ClipboardList, ExternalLink, Info } from "lucide-react";
 
 import { track } from "./utils/analytics.js";
+import { openLarkApp } from "./utils/lark.js";
 import { BIWEEKLY_MAX, BONUS_TASKS, BOOSTER_META, BOOSTERS, buildDayPlan, CHALLENGE_START, WEEK_MAX, WEEKLY_TASKS } from "./data.js";
 
 // Challenge reference (every-week tasks, bonus actionables, how-to-read) lives in a
@@ -138,7 +139,10 @@ function DetailsDrawer({ open, onClose }) {
                   href="https://zuscoffee.sg.larksuite.com/share/base/form/shrlgeDUcryNnylIhAM8JL6li1e"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => track("open_link", { link: "tracker_drawer" })}
+                  onClick={() => {
+                    track("open_link", { link: "tracker_drawer" });
+                    openLarkApp("https://zuscoffee.sg.larksuite.com/share/base/form/shrlgeDUcryNnylIhAM8JL6li1e");
+                  }}
                 >
                   📋 Lark Base Tracker
                 </a>
@@ -149,7 +153,10 @@ function DetailsDrawer({ open, onClose }) {
                   href="https://zuscoffee.sg.larksuite.com/wiki/J4yCw1lWSiCBIKkjpqilg7FwgZb"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => track("open_link", { link: "wiki_drawer" })}
+                  onClick={() => {
+                    track("open_link", { link: "wiki_drawer" });
+                    openLarkApp("https://zuscoffee.sg.larksuite.com/wiki/J4yCw1lWSiCBIKkjpqilg7FwgZb");
+                  }}
                 >
                   📖 Official challenge wiki
                 </a>
@@ -268,7 +275,10 @@ export default function App() {
             href="https://zuscoffee.sg.larksuite.com/share/base/form/shrlgeDUcryNnylIhAM8JL6li1e"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("open_link", { link: "tracker" })}
+            onClick={() => {
+              track("open_link", { link: "tracker" });
+              openLarkApp("https://zuscoffee.sg.larksuite.com/share/base/form/shrlgeDUcryNnylIhAM8JL6li1e");
+            }}
           >
             <ClipboardList size={15} strokeWidth={2.25} aria-hidden="true" />
             Lark Base Tracker
@@ -278,7 +288,10 @@ export default function App() {
             href="https://zuscoffee.sg.larksuite.com/wiki/J4yCw1lWSiCBIKkjpqilg7FwgZb"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("open_link", { link: "wiki" })}
+            onClick={() => {
+              track("open_link", { link: "wiki" });
+              openLarkApp("https://zuscoffee.sg.larksuite.com/wiki/J4yCw1lWSiCBIKkjpqilg7FwgZb");
+            }}
           >
             <BookOpen size={15} strokeWidth={2.25} aria-hidden="true" />
             Official wiki
@@ -374,6 +387,7 @@ export default function App() {
                               onClick={(event) => {
                                 event.stopPropagation();
                                 track("open_link", { link: "booster_wiki", week: b.wk });
+                                openLarkApp(BOOSTER_META[b.phase].wikiUrl);
                               }}
                               onKeyDown={(event) => event.stopPropagation()}
                             >
