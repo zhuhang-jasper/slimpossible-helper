@@ -353,11 +353,6 @@ export default function App() {
                       </td>
                       <td className="wkmax">
                         <span className="wkmax-total">{WEEK_MAX}</span>
-                        <span className="wkmax-base">
-                          <b className="p-base">200</b>
-                          <b className="p-boost">+30</b>
-                          <b className="p-bonus">+10</b>
-                        </span>
                       </td>
                     </tr>
                     {open && (
@@ -369,6 +364,9 @@ export default function App() {
                                 <li key={d.label} className={`wp-act ${d.kind}`}>
                                   <span className="wp-clabel">{d.label}</span>
                                   {d.cue && <span className="wp-ccue">{d.cue}</span>}
+                                  {d.pts && (
+                                    <span className="wp-pts">{d.pts}</span>
+                                  )}
                                 </li>
                               ))}
                             </ul>

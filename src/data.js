@@ -115,25 +115,29 @@ export function buildDayPlan(booster) {
     kind: "steps",
     label: "Keep walking daily",
     cue: "~6k+/day → 40k+/week",
+    pts: "+100",
   });
   if (m.isWorkout) {
     actions.push({
       kind: "workout",
       label: "2 workouts",
-      cue: "separate days · face photo/video",
+      cue: "separate days · face photo/video · booster counts as the 3rd",
+      pts: "+100*",
     });
     actions.push({
       kind: "combo",
-      label: booster.name,
+      label: `${booster.name}*`,
       cue: `counts as a workout · ${m.proof}`,
+      pts: "+30/40",
     });
   } else {
     actions.push({
       kind: "workout",
       label: "3 workouts",
       cue: "separate days · face photo/video",
+      pts: "+100",
     });
-    actions.push({ kind: "booster", label: booster.name, cue: m.proof });
+    actions.push({ kind: "booster", label: booster.name, cue: m.proof, pts: "+30/40" });
   }
   return actions;
 }
