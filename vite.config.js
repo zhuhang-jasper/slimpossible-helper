@@ -10,8 +10,8 @@ import { manualChunks } from "./vite.chunksplit";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** Project site: https://<owner>.github.io/slimpossible-helper/ */
-const pagesBase = process.env.GITHUB_PAGES === "true" ? "/slimpossible-helper/" : "/";
+/** Project site: https://<owner>.github.io/slimpossible-2026/ */
+const pagesBase = process.env.GITHUB_PAGES === "true" ? "/slimpossible-2026/" : "/";
 
 export default defineConfig({
   base: pagesBase,
