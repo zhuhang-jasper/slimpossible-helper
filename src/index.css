@@ -441,6 +441,11 @@ header.hero .gold {
   font-size: 0.8rem;
   min-width: 560px;
 }
+/* blue behind the header section so the white card bg can't show in the sub-pixel
+   gap between the thead box and the first body row (the pale seam line) */
+.tablecard thead {
+  background: var(--zus-blue);
+}
 .tablecard thead th {
   background: var(--zus-blue);
   color: #fff;
@@ -453,11 +458,20 @@ header.hero .gold {
   position: sticky;
   top: var(--hero-h, 0px);
   z-index: 2;
+  /* blue divider below the header — together with the first row's blue border-top
+     this seals the sub-pixel seam so the white card bg can't bleed through */
+  border-bottom: 1px solid var(--zus-blue);
 }
 .tablecard tbody td {
   padding: 9px 10px;
   border-top: 1px solid var(--line);
   vertical-align: top;
+}
+/* the first body row butts against the blue header. Give it a blue top border so
+   it collapses with the header's blue border-bottom into one solid line — no white
+   card background can bleed through the sub-pixel seam (the pale hairline). */
+.tablecard tbody tr:first-child > td {
+  border-top: 1px solid var(--zus-blue);
 }
 .tablecard tbody tr:nth-child(even) {
   background: #fafbff;

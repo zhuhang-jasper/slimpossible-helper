@@ -190,13 +190,20 @@ export default function App() {
     if (!row) {
       return;
     }
-    // account for the sticky hero + sticky table header so the row lands just below them
+    // Land the row's top flush with the header's pinned bottom edge. The header
+    // pins at --hero-h; its visible bottom is --hero-h + the header cell's full
+    // height. Measure the TH (not the THEAD) so the cell's border-bottom is
+    // included — the thead's box doesn't grow by the collapsed border, which left
+    // the row landing ~2px low.
     const heroPin =
       parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hero-h")) || 0;
-    const headerH = document.querySelector(".tablecard thead")?.getBoundingClientRect().height || 0;
-    // +1: land the row 1px lower so it clears the header's bottom edge cleanly,
-    // avoiding the sub-pixel hairline that otherwise shows on some rows.
-    const top = Math.round(row.getBoundingClientRect().top + window.scrollY - heroPin - headerH) + 1;
+    const th = document.querySelector(".tablecard thead th");
+    const headerH = th ? th.getBoundingClientRect().height : 0;
+    // +1: land the row 1px lower so it clears the header's bottom edge, hiding the
+    // sub-pixel hairline that otherwise shows between them. The first row (W1) is an
+    // exception: it sits at the very top, so the +1 would push it off scrollY=0.
+    const nudge = i === 0 ? 0 : 1;
+    const top = Math.round(row.getBoundingClientRect().top + window.scrollY - heroPin - headerH) + nudge;
     window.scrollTo({ top, behavior: "smooth" });
   };
   const toggleWeek = (i) =>
@@ -236,6 +243,7 @@ export default function App() {
     setHeroH();
     const ro = new ResizeObserver(setHeroH);
     ro.observe(hero);
+    // Auto-scroll the current week into view on load.
     if (currentWeek >= 0) {
       scrollRowIntoView(currentWeek);
     }
