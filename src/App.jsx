@@ -1,9 +1,9 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 
-import { BookOpen, ClipboardList, Info } from "lucide-react";
+import { BookOpen, ClipboardList, ExternalLink, Info } from "lucide-react";
 
 import { track } from "./utils/analytics.js";
-import { BIWEEKLY_MAX, BONUS_TASKS, BOOSTERS, buildDayPlan, CHALLENGE_START, WEEK_MAX, WEEKLY_TASKS } from "./data.js";
+import { BIWEEKLY_MAX, BONUS_TASKS, BOOSTER_META, BOOSTERS, buildDayPlan, CHALLENGE_START, WEEK_MAX, WEEKLY_TASKS } from "./data.js";
 
 // Challenge reference (every-week tasks, bonus actionables, how-to-read) lives in a
 // right-side drawer so the booster table is the first thing in the main scroll flow.
@@ -352,6 +352,28 @@ export default function App() {
                           </>
                         )}
                         <span className="tag">{b.tags}</span>
+                        {/* wiki link only shows when the week is expanded */}
+                        {open && BOOSTER_META[b.phase]?.wikiUrl && (
+                          <>
+                            <br />
+                            <a
+                              className="wikilink"
+                              href={BOOSTER_META[b.phase].wikiUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              // the row is itself a toggle button — don't let the link
+                              // click (or keyboard activation) bubble up and collapse it
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                track("open_link", { link: "booster_wiki", week: b.wk });
+                              }}
+                              onKeyDown={(event) => event.stopPropagation()}
+                            >
+                              Click here to see booster's wiki
+                              <ExternalLink size={12} strokeWidth={2.25} aria-hidden="true" />
+                            </a>
+                          </>
+                        )}
                       </td>
                       <td className="wkmax">
                         <span className="wkmax-total">{WEEK_MAX}</span>

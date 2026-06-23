@@ -80,14 +80,44 @@ export const BIWEEKLY_MAX = WEEK_MAX * 2; // 480 over each 2-week booster phase
 //   isWorkout: the booster itself counts as one of the 3 weekly workouts
 //              (so it fills a workout slot instead of needing its own day).
 //   proof: the actionable / evidence to capture for that booster.
+//   wikiUrl: deep link to this booster's section in the official Lark wiki.
+const WIKI_BASE = "https://zuscoffee.sg.larksuite.com/wiki/J4yCw1lWSiCBIKkjpqilg7FwgZb";
 export const BOOSTER_META = {
-  buddy: { isWorkout: true, proof: "photo/video during the walk/jog" },
-  snapfuel: { isWorkout: false, proof: "time-lapse cooking video" },
-  pace1: { isWorkout: true, proof: "screenshot: 2km distance + time" },
-  hydration: { isWorkout: false, proof: "15–30s clip: sip + 1 health fact" },
-  pace2: { isWorkout: true, proof: "screenshot: 2km distance + time" },
-  zen: { isWorkout: true, proof: "15–30s timelapse of the session" },
-  mind: { isWorkout: false, proof: "reflection or photo at the talk" },
+  buddy: {
+    isWorkout: true,
+    proof: "photo/video during the walk/jog",
+    wikiUrl: `${WIKI_BASE}#CX0zd3agVowO5Rx8aFQlGLXbgHc`,
+  },
+  snapfuel: {
+    isWorkout: false,
+    proof: "time-lapse cooking video",
+    wikiUrl: `${WIKI_BASE}#QUngdKhz7oihbCxIRLtlazlUgWb`,
+  },
+  pace1: {
+    isWorkout: true,
+    proof: "screenshot: 2km distance + time",
+    wikiUrl: `${WIKI_BASE}#ZfdQdbrUQoRcRxxKiIBlx8KFgnc`,
+  },
+  hydration: {
+    isWorkout: false,
+    proof: "15–30s clip: sip + 1 health fact",
+    wikiUrl: `${WIKI_BASE}#LgCsdWFgroUG5exYu4Xl05vdggf`,
+  },
+  pace2: {
+    isWorkout: true,
+    proof: "screenshot: 2km distance + time",
+    wikiUrl: `${WIKI_BASE}#HEiSdJjuPotWZDxrWuxlkZAKgjg`,
+  },
+  zen: {
+    isWorkout: true,
+    proof: "15–30s timelapse of the session",
+    wikiUrl: `${WIKI_BASE}#XkzrdeMzsoyryOxiXcJlja67gBf`,
+  },
+  mind: {
+    isWorkout: false,
+    proof: "reflection or photo at the talk",
+    wikiUrl: `${WIKI_BASE}#I6FUdjwEOoVWY0xxTnllBhfIgIb`,
+  },
 };
 
 // Build this week's action checklist (NOT a daily schedule — just the things to do).

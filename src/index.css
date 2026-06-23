@@ -503,6 +503,20 @@ td.wk {
   color: var(--muted);
   margin-top: 2px;
 }
+/* inline link to the booster's official wiki section, under its description */
+.wikilink {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--zus-blue);
+  text-decoration: none;
+  margin-top: 8px;
+}
+.wikilink:hover {
+  text-decoration: underline;
+}
 .bonusline {
   display: inline-block;
   font-size: 0.72rem;
