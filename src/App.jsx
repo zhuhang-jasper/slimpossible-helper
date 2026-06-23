@@ -268,6 +268,10 @@ export default function App() {
           </li>
         </ul>
       </section>
+
+      <footer className="footer">
+        © 2026 Jasper Loo Zhu Hang · All rights reserved · <span className="ver">v{import.meta.env.VITE_APP_VERSION}</span>
+      </footer>
     </div>
   );
 }

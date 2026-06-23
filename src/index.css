@@ -561,6 +561,15 @@ td.total {
   color: var(--zus-gold);
   font-weight: 700;
 }
+.footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.footer .ver {
+  font-variant-numeric: tabular-nums;
+}
 
 @media (max-width: 520px) {
   header.hero h1 {
