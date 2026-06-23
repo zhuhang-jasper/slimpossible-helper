@@ -286,6 +286,9 @@ header.hero .gold {
   color: #8a6420;
 }
 /* point badge inherits its card's category colour */
+.wp-act.report .wp-pts {
+  color: var(--zus-blue);
+}
 .wp-act.workout .wp-pts,
 .wp-act.steps .wp-pts {
   color: var(--green);

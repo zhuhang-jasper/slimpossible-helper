@@ -11,6 +11,7 @@ export const WEEKLY_TASKS = [
     cap: "cap 40/wk",
     desc: "Every Monday. Photo/video of scale (feet + display visible). Only losses score.",
     rows: [
+      ["Maintain or gain", 0],
       ["Lose > 0.5 kg", 10],
       ["Lose > 1 kg", 40],
     ],
@@ -104,11 +105,13 @@ export function buildDayPlan(booster) {
           kind: "report",
           label: "Mon: Weigh-in",
           cue: "scale (feet + display visible)",
+          pts: "+0/10/40",
         }
       : {
           kind: "report",
           label: "Mon: Weigh-in + report",
           cue: "scale (feet + display visible) · log steps, workouts, booster",
+          pts: "+0/10/40",
         },
   ];
   actions.push({
