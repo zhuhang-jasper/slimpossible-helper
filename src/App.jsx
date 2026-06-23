@@ -33,7 +33,9 @@ function DetailsDrawer({ open, onClose }) {
 
   return (
     <div className={`drawer-root${open ? " open" : ""}`} aria-hidden={!open}>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div className="drawer-backdrop" onClick={onClose} />
+      {/* eslint-disable-next-line jsx-a11y/prefer-tag-over-role */}
       <aside className="drawer-panel" role="dialog" aria-modal="true" aria-label="Challenge details" aria-hidden={!open}>
         <div className="drawer-head">
           <h2 className="drawer-title">📖 Challenge details</h2>
@@ -172,7 +174,6 @@ export default function App() {
     const phaseStart = i === 0 || BOOSTERS[i - 1].phase !== b.phase;
     return { ...b, isCurrent: i === currentWeek, phaseStart };
   });
-  const fmt = (n) => n.toLocaleString("en-US");
 
   // Challenge-details drawer (every-week tasks, bonus actionables, how-to-read).
   const [detailsOpen, setDetailsOpen] = useState(false);

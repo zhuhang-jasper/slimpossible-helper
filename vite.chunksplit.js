@@ -13,9 +13,7 @@ const NODE_MODULES_PKG = /\/node_modules\/(@[^/]+\/[^/]+|[^/]+)(?=\/|$)/g;
  * First matching `[regex, chunk]` wins (order matters). Each pattern uses exact package names from this
  * repo's tree only (`package.json` + `package-lock.json`). Add entries when you add matching deps.
  */
-const CHUNK_RULES = [
-  [/^(react|react-dom|scheduler|use-sync-external-store)$/, "react-vendor"],
-];
+const CHUNK_RULES = [[/^(react|react-dom|scheduler|use-sync-external-store)$/, "react-vendor"]];
 
 const npmPackageName = (id) => {
   const normalized = id.replace(/\\/g, "/");
