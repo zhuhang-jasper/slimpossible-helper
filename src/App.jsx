@@ -190,12 +190,13 @@ export default function App() {
     if (!row) {
       return;
     }
-    // account for the sticky hero + sticky table header so the row isn't hidden under them
-    const heroH = document.querySelector("header.hero")?.offsetHeight || 0;
-    const headerH = document.querySelector(".tablecard thead")?.offsetHeight || 0;
-    // clear both sticky bars: 8px top gap + hero + 8px hero→table gap + the table header,
-    // plus a small breathing gap so the row isn't flush against the sticky header
-    const top = row.getBoundingClientRect().top + window.scrollY - heroH - headerH - 8 - 8 - 8;
+    // account for the sticky hero + sticky table header so the row lands just below them
+    const heroPin =
+      parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hero-h")) || 0;
+    const headerH = document.querySelector(".tablecard thead")?.getBoundingClientRect().height || 0;
+    // +1: land the row 1px lower so it clears the header's bottom edge cleanly,
+    // avoiding the sub-pixel hairline that otherwise shows on some rows.
+    const top = Math.round(row.getBoundingClientRect().top + window.scrollY - heroPin - headerH) + 1;
     window.scrollTo({ top, behavior: "smooth" });
   };
   const toggleWeek = (i) =>
@@ -227,9 +228,9 @@ export default function App() {
         // 8px body top-padding (where the hero pins) + hero height + the hero's
         // 8px margin-bottom + the table card's 1px top border (the header rests
         // 1px below the card edge, so it must pin 1px lower to not jump up).
-        // Fractional rect height (not offsetHeight, which rounds) so the
-        // rem-scaled hero lines up to the sub-pixel.
-        `${hero.getBoundingClientRect().height + 8 + 8 + 1}px`,
+        // Round to a whole pixel so the header pins on the device-pixel grid — a
+        // fractional pin leaves a sub-pixel hairline/gap against the row below it.
+        `${Math.round(hero.getBoundingClientRect().height + 8 + 8 + 1)}px`,
       );
     };
     setHeroH();
