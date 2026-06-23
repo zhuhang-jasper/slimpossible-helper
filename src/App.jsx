@@ -1,6 +1,165 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 
+import { BookOpen, ClipboardList, Info } from "lucide-react";
+
+import { track } from "./utils/analytics.js";
 import { BIWEEKLY_MAX, BONUS_TASKS, BOOSTERS, buildDayPlan, CHALLENGE_START, WEEK_MAX, WEEKLY_TASKS } from "./data.js";
+
+// Challenge reference (every-week tasks, bonus actionables, how-to-read) lives in a
+// right-side drawer so the booster table is the first thing in the main scroll flow.
+function DetailsDrawer({ open, onClose }) {
+  const fmt = (n) => n.toLocaleString("en-US");
+  const closeRef = useRef(null);
+
+  // Lock body scroll, close on Esc, and move focus into the drawer while it's open.
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open, onClose]);
+
+  return (
+    <div className={`drawer-root${open ? " open" : ""}`} aria-hidden={!open}>
+      <div className="drawer-backdrop" onClick={onClose} />
+      <aside className="drawer-panel" role="dialog" aria-modal="true" aria-label="Challenge details" aria-hidden={!open}>
+        <div className="drawer-head">
+          <h2 className="drawer-title">📖 Challenge details</h2>
+          <button ref={closeRef} type="button" className="drawer-close" onClick={onClose} aria-label="Close details">
+            ✕
+          </button>
+        </div>
+        <div className="drawer-body">
+          {/* Every-week tasks */}
+          <section className="recurring">
+            <h2>
+              🔁 Do these EVERY week (W1–W14) <span className="maxbadge">up to {WEEK_MAX} pts/wk</span>
+            </h2>
+            <p className="scope everyweek-scope">— All submissions go to the Lark Base Tracker</p>
+            <div className="pill-row">
+              {WEEKLY_TASKS.map((t) => (
+                <div className="pill" key={t.title}>
+                  <div className="t">
+                    <span>
+                      {t.icon} {t.title}
+                    </span>
+                    <span className="cap">{t.cap}</span>
+                  </div>
+                  <div className="d">{t.desc}</div>
+                  <table className="ptab">
+                    <tbody>
+                      {(() => {
+                        const maxVal = Math.max(...t.rows.map(([, v]) => v));
+                        return t.rows.map(([label, val]) => (
+                          <tr key={label} className={val === maxVal ? "target" : ""}>
+                            <td>{label}</td>
+                            <td>{val}</td>
+                          </tr>
+                        ));
+                      })()}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Bonus actionables — boosters only */}
+          <section className="recurring bonus">
+            <h2>
+              <span className="h2-title">🌟 Bonus actionables</span>
+              <span className="maxbadge bonus-max">up to 40++ pts/wk</span>
+            </h2>
+            <p className="scope">— BOOSTERS ONLY (does NOT apply to weigh-in / steps / workouts)</p>
+            <div className="pill-row">
+              {BONUS_TASKS.map((t) => (
+                <div className="pill" key={t.title}>
+                  <div className="t">
+                    <span>
+                      {t.icon} {t.title}
+                    </span>
+                    <span className="cap bonus-cap">{t.badge}</span>
+                  </div>
+                  <div className="d">{t.desc}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="legend">
+            <h2>📌 How to read this</h2>
+            <ul>
+              <li>
+                <b>The 3 every-week tasks above happen every single week</b> — weigh-in (Mon), step log, and 3 workouts.
+              </li>
+              <li>
+                <b>The booster changes every 2 weeks.</b> Just check your week's row for what's special.
+              </li>
+              <li>
+                <b>Booster pts = 30 / 40:</b> <span className="req">30</span> = Lark Base submission (required for any points).{" "}
+                <span className="opt">40</span> = Lark Base <i>+</i> post on ZUS Moments with the hashtags.
+              </li>
+              <li>
+                <b>Week target = {WEEK_MAX}:</b> the realistic ceiling — 100 steps + 100 workouts + 40 booster. <b>Weigh-in is excluded</b> (you can't
+                bank the 40-pt loss tier every week). Bi-weekly max is <b>{fmt(BIWEEKLY_MAX)}</b>; the full-challenge ceiling is{" "}
+                <b>{fmt(WEEK_MAX * BOOSTERS.length)}</b> — your leaderboard benchmark.
+              </li>
+              <li>
+                <b>All submissions go to the Lark Base Tracker</b> — that's mandatory for points to count.
+              </li>
+              <li>
+                All activities must be done <b>outside working hours</b>. Only weight <i>losses</i> earn points (maintain/gain = 0).
+              </li>
+              <li>
+                <b>Final report: 28 Sep</b> — the day after W14 closes; final standings are tallied then.
+              </li>
+            </ul>
+          </section>
+
+          <section className="links">
+            <h2>🔗 Official links</h2>
+            <ul>
+              <li>
+                <a
+                  href="https://zuscoffee.sg.larksuite.com/share/base/form/shrlgeDUcryNnylIhAM8JL6li1e"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track("open_link", { link: "tracker_drawer" })}
+                >
+                  📋 Lark Base Tracker
+                </a>
+                <span className="link-note">Submit every weigh-in, step log, workout &amp; booster here</span>
+              </li>
+              <li>
+                <a
+                  href="https://zuscoffee.sg.larksuite.com/wiki/J4yCw1lWSiCBIKkjpqilg7FwgZb"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track("open_link", { link: "wiki_drawer" })}
+                >
+                  📖 Official challenge wiki
+                </a>
+                <span className="link-note">Full rules &amp; details from the organisers</span>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </aside>
+    </div>
+  );
+}
 
 export default function App() {
   // Which week is "now"? 0-based index into BOOSTERS; -1 if outside the challenge.
@@ -8,14 +167,19 @@ export default function App() {
   const weeksSinceStart = Math.floor((Date.now() - CHALLENGE_START.getTime()) / msPerWeek);
   const currentWeek = weeksSinceStart >= 0 && weeksSinceStart < BOOSTERS.length ? weeksSinceStart : -1;
 
-  // running cumulative total computed from WEEK_MAX; flag current week + phase starts
-  let acc = 0;
+  // flag current week + phase starts
   const rows = BOOSTERS.map((b, i) => {
-    acc += WEEK_MAX;
     const phaseStart = i === 0 || BOOSTERS[i - 1].phase !== b.phase;
-    return { ...b, total: acc, isCurrent: i === currentWeek, phaseStart };
+    return { ...b, isCurrent: i === currentWeek, phaseStart };
   });
   const fmt = (n) => n.toLocaleString("en-US");
+
+  // Challenge-details drawer (every-week tasks, bonus actionables, how-to-read).
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const openDetails = (source) => {
+    setDetailsOpen(true);
+    track("open_details", { source });
+  };
 
   // Expandable 7-day plan: which week index is open (current week by default).
   const [openWeek, setOpenWeek] = useState(currentWeek);
@@ -28,7 +192,9 @@ export default function App() {
     // account for the sticky hero + sticky table header so the row isn't hidden under them
     const heroH = document.querySelector("header.hero")?.offsetHeight || 0;
     const headerH = document.querySelector(".tablecard thead")?.offsetHeight || 0;
-    const top = row.getBoundingClientRect().top + window.scrollY - heroH - headerH - 16; // 8px top gap + 8px gap between the two sticky bars
+    // clear both sticky bars: 8px top gap + hero + 8px hero→table gap + the table header,
+    // plus a small breathing gap so the row isn't flush against the sticky header
+    const top = row.getBoundingClientRect().top + window.scrollY - heroH - headerH - 8 - 8 - 8;
     window.scrollTo({ top, behavior: "smooth" });
   };
   const toggleWeek = (i) =>
@@ -37,29 +203,41 @@ export default function App() {
       // scroll the row into view when it opens (after the plan row renders)
       if (next === i) {
         requestAnimationFrame(() => scrollRowIntoView(i));
+        track("expand_week", { week: BOOSTERS[i]?.wk ?? i + 1 });
       }
       return next;
     });
 
-  // Keep --hero-h in sync with the sticky hero's height so the table header
-  // can stack right below it. Also auto-scroll the current week into view on load.
+  // The hero and the table header are two stacked sticky bars; the lower one
+  // (table header, top: var(--hero-h)) must know where the hero's bottom sits.
+  // CSS can't measure that, so we compute --hero-h from the hero's height and
+  // keep it live with a ResizeObserver — covers CSS/HMR edits, late font loads,
+  // and window resizes alike (not just mount). Also auto-scrolls the current
+  // week into view on load.
   useEffect(() => {
     const hero = document.querySelector("header.hero");
+    if (!hero) {
+      return;
+    }
     const setHeroH = () => {
-      if (hero) {
-        document.documentElement.style.setProperty(
-          "--hero-h",
-          // hero height + its 8px top gap + an 8px gap between the two sticky bars
-          `${hero.offsetHeight + 16}px`,
-        );
-      }
+      document.documentElement.style.setProperty(
+        "--hero-h",
+        // Where the table header pins, measured from viewport top:
+        // 8px body top-padding (where the hero pins) + hero height + the hero's
+        // 8px margin-bottom + the table card's 1px top border (the header rests
+        // 1px below the card edge, so it must pin 1px lower to not jump up).
+        // Fractional rect height (not offsetHeight, which rounds) so the
+        // rem-scaled hero lines up to the sub-pixel.
+        `${hero.getBoundingClientRect().height + 8 + 8 + 1}px`,
+      );
     };
     setHeroH();
-    window.addEventListener("resize", setHeroH);
+    const ro = new ResizeObserver(setHeroH);
+    ro.observe(hero);
     if (currentWeek >= 0) {
       scrollRowIntoView(currentWeek);
     }
-    return () => window.removeEventListener("resize", setHeroH);
+    return () => ro.disconnect();
     // mount-only: currentWeek is derived from Date.now() and is stable for the session
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -67,67 +245,36 @@ export default function App() {
   return (
     <div className="wrap">
       <header className="hero">
+        <button type="button" className="hero-info" onClick={() => openDetails("hero_info")} aria-label="Open challenge details">
+          <Info size={20} strokeWidth={2.25} aria-hidden="true" />
+        </button>
         <h1>🏋️ Slimpossible Challenge 2026</h1>
         <div className="sub">
           14-week weekly timetable · Challenge runs <span className="gold">22 Jun – 27 Sep 2026</span> · Cash prizes up to RM5,000
         </div>
+        <div className="hero-links">
+          <a
+            className="hero-link"
+            href="https://zuscoffee.sg.larksuite.com/share/base/form/shrlgeDUcryNnylIhAM8JL6li1e"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("open_link", { link: "tracker" })}
+          >
+            <ClipboardList size={15} strokeWidth={2.25} aria-hidden="true" />
+            Lark Base Tracker
+          </a>
+          <a
+            className="hero-link"
+            href="https://zuscoffee.sg.larksuite.com/wiki/J4yCw1lWSiCBIKkjpqilg7FwgZb"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("open_link", { link: "wiki" })}
+          >
+            <BookOpen size={15} strokeWidth={2.25} aria-hidden="true" />
+            Official wiki
+          </a>
+        </div>
       </header>
-
-      {/* Every-week tasks */}
-      <section className="recurring">
-        <h2>
-          🔁 Do these EVERY week (W1–W14) <span className="maxbadge">up to {WEEK_MAX} pts/wk</span>
-        </h2>
-        <p className="scope everyweek-scope">— All submissions go to the Lark Base Tracker</p>
-        <div className="pill-row">
-          {WEEKLY_TASKS.map((t) => (
-            <div className="pill" key={t.title}>
-              <div className="t">
-                <span>
-                  {t.icon} {t.title}
-                </span>
-                <span className="cap">{t.cap}</span>
-              </div>
-              <div className="d">{t.desc}</div>
-              <table className="ptab">
-                <tbody>
-                  {(() => {
-                    const maxVal = Math.max(...t.rows.map(([, v]) => v));
-                    return t.rows.map(([label, val]) => (
-                      <tr key={label} className={val === maxVal ? "target" : ""}>
-                        <td>{label}</td>
-                        <td>{val}</td>
-                      </tr>
-                    ));
-                  })()}
-                </tbody>
-              </table>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Bonus actionables — boosters only */}
-      <section className="recurring bonus">
-        <h2>
-          <span className="h2-title">🌟 Bonus actionables</span>
-          <span className="maxbadge bonus-max">up to 40++ pts/wk</span>
-        </h2>
-        <p className="scope">— BOOSTERS ONLY (does NOT apply to weigh-in / steps / workouts)</p>
-        <div className="pill-row">
-          {BONUS_TASKS.map((t) => (
-            <div className="pill" key={t.title}>
-              <div className="t">
-                <span>
-                  {t.icon} {t.title}
-                </span>
-                <span className="cap bonus-cap">{t.badge}</span>
-              </div>
-              <div className="d">{t.desc}</div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Booster rotation table */}
       <div className="tablecard">
@@ -137,8 +284,7 @@ export default function App() {
               <tr>
                 <th className="th-wk">Week</th>
                 <th className="th-booster">Bi-Weekly Booster</th>
-                <th>Wk target</th>
-                <th>Acc. total</th>
+                <th>Week target</th>
               </tr>
             </thead>
             <tbody>
@@ -213,11 +359,10 @@ export default function App() {
                           <b className="p-bonus">+10</b>
                         </span>
                       </td>
-                      <td className="total">{fmt(b.total)}</td>
                     </tr>
                     {open && (
                       <tr className={`planrow${b.isCurrent ? " current" : ""}`}>
-                        <td colSpan={4} aria-label={`Week ${b.wk} day plan`}>
+                        <td colSpan={3} aria-label={`Week ${b.wk} day plan`}>
                           <div className="wp-strip">
                             <ul className="wp-actions">
                               {buildDayPlan(b).map((d) => (
@@ -239,35 +384,7 @@ export default function App() {
         </div>
       </div>
 
-      <section className="legend">
-        <h2>📌 How to read this</h2>
-        <ul>
-          <li>
-            <b>The 3 cards up top happen every single week</b> — weigh-in (Mon), step log, and 3 workouts.
-          </li>
-          <li>
-            <b>The booster changes every 2 weeks.</b> Just check your week's row for what's special.
-          </li>
-          <li>
-            <b>Booster pts = 30 / 40:</b> <span className="req">30</span> = Lark Base submission (required for any points).{" "}
-            <span className="opt">40</span> = Lark Base <i>+</i> post on ZUS Moments with the hashtags.
-          </li>
-          <li>
-            <b>Wk target = {WEEK_MAX}:</b> the realistic ceiling — 100 steps + 100 workouts + 40 booster. <b>Weigh-in is excluded</b> (you can't bank
-            the 40-pt loss tier every week). Bi-weekly max is <b>{fmt(BIWEEKLY_MAX)}</b>; <b>Acc. total</b> is the running cumulative max, ending at{" "}
-            <b>{fmt(WEEK_MAX * BOOSTERS.length)}</b> — your leaderboard benchmark.
-          </li>
-          <li>
-            <b>All submissions go to the Lark Base Tracker</b> — that's mandatory for points to count.
-          </li>
-          <li>
-            All activities must be done <b>outside working hours</b>. Only weight <i>losses</i> earn points (maintain/gain = 0).
-          </li>
-          <li>
-            <b>Final report: 28 Sep</b> — the day after W14 closes; final standings are tallied then.
-          </li>
-        </ul>
-      </section>
+      <DetailsDrawer open={detailsOpen} onClose={() => setDetailsOpen(false)} />
 
       <footer className="footer">
         © 2026 Jasper Loo Zhu Hang · All rights reserved · <span className="ver">v{import.meta.env.VITE_APP_VERSION}</span>

@@ -30,7 +30,9 @@ body {
   background: var(--bg);
   color: var(--ink);
   line-height: 1.45;
-  padding: 24px 16px 56px;
+  /* top padding == hero's sticky `top` (8px) so the hero rests exactly where it
+     pins — no layout shift when scrolling between top and stuck states */
+  padding: 8px 16px 24px;
 }
 /* opaque backdrop behind the sticky hero + table-header zone, so content
    scrolling underneath isn't visible through the gaps. Sits below the bars
@@ -55,12 +57,73 @@ header.hero {
   background: linear-gradient(135deg, var(--zus-blue), #2c3db0);
   color: #fff;
   border-radius: 16px;
-  padding: 22px 24px;
-  margin-bottom: 14px;
+  padding: 16px 20px;
+  margin-bottom: 8px;
   box-shadow: 0 6px 20px rgba(29, 43, 138, 0.18);
   position: sticky;
   top: 8px;
   z-index: 10; /* pinned with an 8px gap; table header stacks below via --hero-h */
+}
+/* Drawer entry point #1: info icon, top-right of the hero. */
+.hero-info {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  line-height: 1;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+.hero-info:hover {
+  opacity: 0.75;
+}
+.hero-info:active {
+  transform: scale(0.94);
+}
+/* Always-visible official links: two compact rounded pill buttons sharing the row evenly. */
+.hero-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+.hero-link svg {
+  flex-shrink: 0;
+}
+.hero-link:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+.hero-link:active {
+  transform: scale(0.97);
 }
 header.hero h1 {
   margin: 0;
@@ -431,7 +494,7 @@ td.wk {
   opacity: 0.85;
   margin-top: 1px;
 }
-/* Wk target — compact stack: total, baseline, + booster (with its 30/40) */
+/* Week target — compact stack: total, baseline, + booster (with its 30/40) */
 td.wkmax {
   white-space: nowrap;
   text-align: right;
@@ -525,7 +588,8 @@ td.total {
 }
 
 /* ---------- Legend / footer ---------- */
-.legend {
+.legend,
+.links {
   margin-top: 14px;
   background: #fff;
   border: 1px solid var(--line);
@@ -535,10 +599,35 @@ td.total {
   line-height: 1.65;
   color: var(--muted);
 }
-.legend h2 {
+.legend h2,
+.links h2 {
   margin: 0 0 14px;
   font-size: 0.95rem;
   color: var(--zus-blue);
+}
+.links ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.links li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.links a {
+  font-weight: 700;
+  color: var(--zus-blue);
+  text-decoration: none;
+}
+.links a:hover {
+  text-decoration: underline;
+}
+.link-note {
+  font-size: 0.76rem;
+  color: var(--muted);
 }
 .legend ul {
   margin: 0;
@@ -571,12 +660,103 @@ td.total {
   font-variant-numeric: tabular-nums;
 }
 
+/* ---------- Challenge-details drawer ---------- */
+.drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  /* hidden until .open: keep out of the layout & non-interactive */
+  visibility: hidden;
+  pointer-events: none;
+}
+.drawer-root.open {
+  visibility: visible;
+  pointer-events: auto;
+}
+.drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 20, 50, 0.5);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.drawer-root.open .drawer-backdrop {
+  opacity: 1;
+}
+.drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(440px, 92vw);
+  background: var(--bg);
+  box-shadow: -8px 0 28px rgba(16, 20, 50, 0.22);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.drawer-root.open .drawer-panel {
+  transform: translateX(0);
+}
+.drawer-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  background: linear-gradient(135deg, var(--zus-blue), #2c3db0);
+  color: #fff;
+}
+.drawer-title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.drawer-close:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+.drawer-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 14px 20px;
+}
+/* sections sit flush inside the drawer; first one needs no extra top gap */
+.drawer-body .recurring {
+  margin-top: 0;
+}
+.drawer-body .recurring + .recurring,
+.drawer-body .legend,
+.drawer-body .links {
+  margin-top: 16px;
+}
+/* the narrow drawer can't fit the 3-up pill grid — stack the cards */
+.drawer-body .pill-row {
+  grid-template-columns: 1fr;
+  grid-template-rows: none;
+}
+
 @media (max-width: 520px) {
   header.hero h1 {
     font-size: 1.25rem;
   }
   body {
-    padding: 14px 8px 40px;
+    /* keep top padding == hero `top: 8px` (same as desktop) so the sticky hero
+       doesn't jump vertically when scrolling to/from the top on mobile */
+    padding: 8px 8px 20px;
   }
   .pill-row {
     grid-template-columns: 1fr;
@@ -594,21 +774,6 @@ td.total {
   } /* smaller header so cols stay narrow */
   .tablecard tbody td {
     padding: 6px 6px;
-  }
-  .tablecard th:last-child,        /* Acc. total header */
-  .tablecard td.total {
-    display: none;
-  } /* hide cumulative total on mobile */
-  /* Acc.total hidden, so the expanded week's right border must move to Wk target */
-  .tablecard tbody tr.wkrow.open:not(.current) td.wkmax {
-    box-shadow:
-      inset -3px 0 0 var(--zus-blue),
-      inset 0 3px 0 var(--zus-blue);
-  }
-  .tablecard tbody tr.current.open td.wkmax {
-    box-shadow:
-      inset -3px 0 0 var(--zus-blue),
-      inset 0 3px 0 var(--zus-blue);
   }
   .wkmax-base {
     font-size: 0.7rem;
@@ -633,15 +798,18 @@ td.total {
   /* tighter corners on small screens */
   .recurring,
   .legend,
+  .links,
   header.hero {
     border-radius: 8px;
   }
   /* legend: match the other section cards' padding/spacing on mobile */
-  .legend {
+  .legend,
+  .links {
     padding: 14px 16px;
     line-height: 1.5;
   }
-  .legend h2 {
+  .legend h2,
+  .links h2 {
     margin: 0 0 10px;
   }
   .legend li {
