@@ -248,7 +248,7 @@ export default function App() {
         <button type="button" className="hero-info" onClick={() => openDetails("hero_info")} aria-label="Open challenge details">
           <Info size={20} strokeWidth={2.25} aria-hidden="true" />
         </button>
-        <h1>🏋️ Slimpossible Challenge 2026</h1>
+        <h1>🏋️ SlimPossible Challenge 2026</h1>
         <div className="sub">
           14-week weekly timetable · Challenge runs <span className="gold">22 Jun – 27 Sep 2026</span> · Cash prizes up to RM5,000
         </div>
@@ -364,9 +364,7 @@ export default function App() {
                                 <li key={d.label} className={`wp-act ${d.kind}`}>
                                   <span className="wp-clabel">{d.label}</span>
                                   {d.cue && <span className="wp-ccue">{d.cue}</span>}
-                                  {d.pts && (
-                                    <span className="wp-pts">{d.pts}</span>
-                                  )}
+                                  {d.pts && <span className="wp-pts">{d.pts}</span>}
                                 </li>
                               ))}
                             </ul>
